@@ -428,12 +428,17 @@ img {
   background-color: var(--black-color);
   color: var(--white-color);
   font-weight: var(--font-medium);
+  transition: background-color .4s;
   cursor: pointer;
 }
 
 .home__scroll i {
   font-size: 1.25rem;
   transform: translateY(0.05rem);
+}
+
+.home__scroll:hover {
+  background-color: var(--first-color);
 }
 
 /*=============== BUTTON ===============*/
@@ -563,6 +568,12 @@ img {
   list-style: square;
   color: var(--title-color);
   margin-bottom: 3rem;
+}
+
+.about__list .about__item b {
+  background: linear-gradient(90deg,
+              hsla(14, 98%, 50%, 0.3),
+              hsla(14, 98%, 50%, 0));
 }
 
 .about__buttons {
