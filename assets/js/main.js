@@ -37,5 +37,22 @@ window.addEventListener('scroll', function () {
 /*=============== SHOW SCROLL UP ===============*/
 
 /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', function() {
+    const scrollDown = this.scrollY;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 56;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        const sectionLink = document.querySelector(`.nav__menu a[href*="${sectionId}"]`);
+
+        if (sectionLink) {
+            const isActive = scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight;
+            sectionLink.classList.toggle('active-link', isActive);
+        }
+    });
+});
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
