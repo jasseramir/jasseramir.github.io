@@ -26,6 +26,11 @@ navLinks.forEach((navLink) =>
 );
 
 /*=============== SHADOW HEADER ===============*/
+const header = document.getElementById('header');
+
+window.addEventListener('scroll', function () {
+  header.classList.toggle('shadow-header', this.scrollY >= 50);
+});
 
 /*=============== EMAIL JS ===============*/
 
