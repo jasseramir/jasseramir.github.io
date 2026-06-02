@@ -85,38 +85,36 @@ const contactBtn = document.getElementById('contact-button');
 let timeId = null;
 
 async function sendEmail() {
-    if (timeId) clearTimeout(timeId);
+  if (timeId) clearTimeout(timeId);
 
-    try {
-        contactBtn.disabled = true;
-        contactMessage.style.display = 'block';
-        contactMessage.textContent = 'Sending...';
+  try {
+    contactBtn.disabled = true;
+    contactMessage.style.display = 'block';
+    contactMessage.textContent = 'Sending... 🔄';
 
-        const templateParams = {
-            from_name: contactForm.querySelector('input[type="text"]').value,
-            user_email: contactForm.querySelector('input[type="email"]').value,
-            message: contactForm.querySelector('textarea').value
-        };
+    const email = await emailjs.sendForm(
+      'service_3pl6sg8',
+      'template_s26dkmr',
+      contactForm,
+      '8-3MlNU4tu0G6NJrt',
+    );
 
-        const email = await emailjs.send('service_3pl6sg8', 'template_s26dkmr', templateParams, '8-3MlNU4tu0G6NJrt');
-
-        contactMessage.textContent = 'Sent successfully';
-        contactForm.reset();
-
-    } catch(err) {
-        console.log(err);
-        contactMessage.textContent = 'Error: ' + (err.text || err.message || JSON.stringify(err) || 'Unknown Error');
-    } finally {
-        contactBtn.disabled = false;
-        timeId = setTimeout(() => {
-            contactMessage.style.display = 'none';
-        }, 3000);
-    }
+    contactMessage.textContent = 'Sent successfully ✅';
+    contactForm.reset();
+  } catch (err) {
+    console.log(err);
+    contactMessage.textContent = 'Failed to send ❌';
+  } finally {
+    contactBtn.disabled = false;
+    timeId = setTimeout(() => {
+      contactMessage.style.display = 'none';
+    }, 3000);
+  }
 }
 
-contactForm.addEventListener('submit', e => {
-    e.preventDefault();
-    sendEmail();
+contactForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  sendEmail();
 });
 
 /*=============== SHOW SCROLL UP ===============*/
