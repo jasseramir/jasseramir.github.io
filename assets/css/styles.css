@@ -347,7 +347,6 @@ img {
   right: -0.75rem;
   border: 4px solid var(--black-color);
   z-index: 5;
-  transition: background-color 0.4s;
 }
 
 .home__arrow,
@@ -355,7 +354,6 @@ img {
   position: absolute;
   filter: invert(1);
   width: 50px;
-  transition: filter 0.4s;
 }
 
 .home__arrow {
@@ -440,14 +438,13 @@ img {
   font-size: 1.25rem;
 }
 
-.button:hover {
+.button:not(.contact__button):hover {
   background-color: var(--first-color);
 }
 
 /*=============== ABOUT ===============*/
 .about {
   background-color: var(--container-color);
-  transition: background-color 0.4s;
 }
 
 .about__container {
@@ -483,7 +480,6 @@ img {
   top: -2.5rem;
   right: -3.5rem;
   border-bottom: 4px solid var(--first-color);
-  transition: background-color 0.4s;
 }
 
 .about__perfil .geometric-box {
@@ -496,7 +492,6 @@ img {
   right: -1.25rem;
   top: 6rem;
   width: 50px;
-  transition: filter 0.4s;
 }
 
 .about__box {
@@ -565,9 +560,6 @@ img {
   padding: 6rem 1rem 3rem;
   z-index: 5;
   position: relative;
-  transition:
-    background-color 0.4s,
-    border 0.4s;
 }
 
 .services__border {
@@ -613,7 +605,6 @@ img {
 /*=============== PROJECTS ===============*/
 .projects {
   background-color: var(--container-color);
-  transition: background-color 0.4s;
 }
 
 .projects__container {
@@ -717,7 +708,6 @@ img {
   margin-left: auto;
   border-bottom: 4px solid var(--first-color);
   z-index: 5;
-  transition: background-color 0.4s;
 }
 
 .contact__data .section__title-2 {
@@ -746,7 +736,6 @@ img {
   background-color: var(--black-color);
   padding: 5rem 1.5rem 2.5rem;
   margin-top: -2.5rem;
-  margin-top: background-color 0.4s;
 }
 
 .contact__title {
