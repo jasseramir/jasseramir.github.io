@@ -32,6 +32,51 @@ window.addEventListener('scroll', function () {
   header.classList.toggle('shadow-header', this.scrollY >= 50);
 });
 
+/*=============== RENDER PROJECTS ===============*/
+const projectsContainer = document.getElementById('projects-container');
+const projects = [
+  {
+    projectImgSrc: 'project-1.jpg',
+    projectImgAlt: 'Tior Al-Fath website preview on a laptop screen',
+    projectLink: 'https://tior-alfath.netlify.app',
+    projectType: 'Website',
+    projectTitle: 'Poultry Shop',
+    projectDescription:
+      'A modern and user-friendly front-end website designed for a poultry shop, featuring a clean layout to showcase products, daily prices, and seamless navigation for customers.',
+    projectGithubSrc: 'https://github.com/jasseramir/tior-alfath',
+  },
+];
+let html = '';
+
+for (const project of projects) {
+  html += `
+    <article class="projects__card">
+      <div class="projects__image">
+        <img src="./assets/img/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
+
+        <a href="${project.projectLink}" class="button projects__button">
+          <i class="ri-arrow-right-up-line"></i>
+        </a>
+      </div>
+
+      <div class="projects__content">
+        <h3 class="projects__subtitle">${project.projectType}</h3>
+        <h2 class="projects__title">${project.projectTitle}</h2>
+
+        <p class="projects__description">${project.projectDescription}</p>
+      </div>
+
+      <div class="projects__buttons">
+        <a href="${project.projectGithubSrc}" target="_blank" class="projects__link">
+          <i class="ri-github-line"></i> View
+        </a>
+      </div>
+    </article>
+    `;
+}
+
+projectsContainer.innerHTML = html;
+
 /*=============== EMAIL JS ===============*/
 
 /*=============== SHOW SCROLL UP ===============*/
