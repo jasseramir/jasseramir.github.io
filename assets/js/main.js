@@ -47,7 +47,7 @@ const projects = [
   },
   {
     projectImgSrc: 'project-2.jpg',
-    projectImgAlt: 'A laptop on a table',
+    projectImgAlt: 'A notebook wireframe sketch showing the layout design for the Roman Numeral Game project',
     projectLink: 'https://jasseramir.github.io/roman-numeral-teacher/',
     projectType: 'Website',
     projectTitle: 'Roman Numeral Game',
