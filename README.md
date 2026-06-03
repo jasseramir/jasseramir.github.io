@@ -3,6 +3,7 @@
 A personal portfolio website built from scratch with vanilla HTML, CSS, and JavaScript. Designed to showcase my front-end development projects, skills, and services — with a focus on clean UI, smooth animations, and a fully responsive layout.
 
 **Live site:** [jasseramir.github.io](https://jasseramir.github.io)
+
 **Inspired by:** Bedmicode
 
 ---
