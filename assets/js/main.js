@@ -63,7 +63,7 @@ for (const project of projects) {
   html += `
     <article class="projects__card">
       <div class="projects__image">
-        <img src="./assets/img/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
+        <img src="assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
 
         <a href="${project.projectLink}" class="button projects__button">
           <i class="ri-arrow-right-up-line"></i>
