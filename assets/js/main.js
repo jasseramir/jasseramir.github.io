@@ -120,8 +120,10 @@ contactForm.addEventListener('submit', (e) => {
 /*=============== SHOW SCROLL UP ===============*/
 const scrollup = document.getElementById('scroll-up');
 
-window.addEventListener('scroll', function() {
-    this.scrollY >= 350 ? scrollup.classList.add('show-scroll') : scrollup.classList.remove('show-scroll');
+window.addEventListener('scroll', function () {
+  this.scrollY >= 350
+    ? scrollup.classList.add('show-scroll')
+    : scrollup.classList.remove('show-scroll');
 });
 
 /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/

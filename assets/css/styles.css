@@ -937,13 +937,13 @@ img {
 
 /*=============== SCROLL BAR && SELECTING TEXT ===============*/
 ::-webkit-scrollbar {
-  width: .6rem;
-  border-radius: .5rem;
+  width: 0.6rem;
+  border-radius: 0.5rem;
   background-color: hsl(0, 0%, 65%);
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   background-color: hsl(0, 0%, 55%);
 }
 
@@ -972,11 +972,13 @@ img {
   padding: 8px;
   font-size: 1.25rem;
   z-index: var(--z-tooltip);
-  transition: bottom .4s, transform .3s;
+  transition:
+    bottom 0.4s,
+    transform 0.3s;
 }
 
 .scrollup:hover {
-  transform: translateY(-.25rem);
+  transform: translateY(-0.25rem);
 }
 
 /* Show Scroll Up */
@@ -990,11 +992,11 @@ img {
   .container {
     margin-inline: 1rem;
   }
-  
+
   .home__image {
     width: 180px;
   }
-  
+
   .about__image {
     width: 180px;
   }
@@ -1002,7 +1004,7 @@ img {
     height: 330px;
     right: -2.5rem;
   }
-  
+
   .contact__data {
     width: 100%;
   }
@@ -1019,7 +1021,7 @@ img {
     grid-template-columns: 350px;
     justify-content: center;
   }
-  
+
   .contact__data {
     width: 350px;
     padding: 4rem 1rem;
@@ -1051,7 +1053,7 @@ img {
   .services__container {
     grid-template-columns: repeat(2, 250px);
   }
-  
+
   .projects__container {
     grid-template-columns: repeat(2, 350px);
   }
@@ -1062,7 +1064,7 @@ img {
   .container {
     margin-inline: auto;
   }
-  
+
   .section {
     padding-block: 7rem 2rem;
   }
@@ -1071,11 +1073,11 @@ img {
     width: 70px;
     height: 48px;
   }
-  
+
   .geometric-box {
     transform: scale(1.2);
   }
-  
+
   .nav {
     height: calc(var(--header-height) + 2rem);
   }
@@ -1102,11 +1104,11 @@ img {
   .nav__link::after {
     background-color: var(--title-color);
   }
-  
+
   .active-link {
     color: var(--title-color);
   }
-  
+
   .nav__link-button {
     background-color: var(--black-color);
     color: var(--white-color);
@@ -1180,7 +1182,7 @@ img {
   }
   .home__social-link {
     font-size: 1.5rem;
-    padding: .5rem;
+    padding: 0.5rem;
   }
 
   .about__container {
@@ -1199,7 +1201,7 @@ img {
   .about__img {
     border: 8px solid var(--white-color);
   }
-  
+
   .about__shadow {
     width: 240px;
     height: 615px;
@@ -1219,7 +1221,7 @@ img {
   .about__box {
     width: 64px;
     height: 64px;
-    right: -.75rem;
+    right: -0.75rem;
   }
   .about__container .section__title-1 {
     align-self: flex-end;
@@ -1340,7 +1342,7 @@ img {
   }
   .contact__social-link {
     font-size: 1.5rem;
-    padding: .5rem;
+    padding: 0.5rem;
   }
   .contact__message {
     bottom: -2.5rem;
@@ -1355,7 +1357,7 @@ img {
     order: 1;
     column-gap: 3rem;
   }
-  
+
   .scrollup {
     right: 3rem;
   }
