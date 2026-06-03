@@ -1,9 +1,9 @@
 # Jasser Amir — Personal Portfolio
 
 A personal portfolio website built from scratch with vanilla HTML, CSS, and JavaScript. Designed to showcase my front-end development projects, skills, and services — with a focus on clean UI, smooth animations, and a fully responsive layout.
-Inspired by front-end portfolio tutorials and customized extensively with additional features and personal modifications.
 
 **Live site:** [jasseramir.github.io](https://jasseramir.github.io)
+**Inspired by:** Bedmicode
 
 ---
 
