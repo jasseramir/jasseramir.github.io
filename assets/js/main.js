@@ -47,13 +47,15 @@ const projects = [
   },
   {
     projectImgSrc: 'project-2.jpg',
-    projectImgAlt: 'A notebook wireframe sketch showing the layout design for the Roman Numeral Game project',
+    projectImgAlt:
+      'A notebook wireframe sketch showing the layout design for the Roman Numeral Game project',
     projectLink: 'https://jasseramir.github.io/roman-numeral-teacher/',
     projectType: 'Website',
     projectTitle: 'Roman Numeral Game',
-    projectDescription: 'An engaging and educational puzzle game designed to master Roman numerals, featuring interactive challenges, progress tracking, and a sleek layout for an immersive learning experience.',
+    projectDescription:
+      'An engaging and educational puzzle game designed to master Roman numerals, featuring interactive challenges, progress tracking, and a sleek layout for an immersive learning experience.',
     projectGithubSrc: 'https://github.com/jasseramir/roman-numeral-teacher',
-}
+  },
 ];
 let html = '';
 
@@ -159,12 +161,15 @@ window.addEventListener('scroll', function () {
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
-    origin: 'top',
-    distance: '60px',
-    duration: 2500,
-    delay: 400,
+  origin: 'top',
+  distance: '60px',
+  duration: 2500,
+  delay: 400,
 });
 
-sr.reveal('.home__perfil, .about__image, .contact__mail', {origin: 'right'});
-sr.reveal('.home__name, .home__info, .about__container .section__title-1, .about__info, .about__button, .contact__social, .contact__data', {origin: 'left'});
-sr.reveal('.services__card, .projects__card', {interval: 100});
+sr.reveal('.home__perfil, .about__image, .contact__mail', { origin: 'right' });
+sr.reveal(
+  '.home__name, .home__info, .about__container .section__title-1, .about__info, .about__button, .contact__social, .contact__data',
+  { origin: 'left' },
+);
+sr.reveal('.services__card, .projects__card', { interval: 100 });
