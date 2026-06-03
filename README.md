@@ -4,7 +4,7 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 
 **Live site:** [jasseramir.github.io](https://jasseramir.github.io)
 
-**Inspired by:** Bedmicode
+**Inspired by:** [Bedimcode](https://github.com/bedimcode)
 
 ---
 
