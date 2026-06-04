@@ -57,10 +57,10 @@ const projects = [
     projectGithubSrc: 'https://github.com/jasseramir/roman-numeral-teacher',
   },
 ];
-let html = '';
+let projectsHTML = '';
 
 for (const project of projects) {
-  html += `
+  projectsHTML += `
     <article class="projects__card">
       <div class="projects__image">
         <img src="assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
@@ -86,7 +86,54 @@ for (const project of projects) {
     `;
 }
 
-projectsContainer.innerHTML = html;
+projectsContainer.innerHTML = projectsHTML;
+
+/*=============== RENDER CERTIFICATES ===============*/
+// The monthes are written in letters
+
+const certificatesContainer = document.getElementById('certificates-container');
+const certificates = [
+  {
+    organization: 'freeCodeCamp',
+    certificateTitle: 'Web Design',
+    dateDay: '16',
+    dateMonth: 'Feb',
+    dateYear: '2026',
+    certificateLink:
+      'https://freecodecamp.org/certification/jasseramir/responsive-web-design-v9',
+  },
+  {
+    organization: 'freeCodeCamp',
+    certificateTitle: 'JavaScript',
+    dateDay: '5',
+    dateMonth: 'Mar',
+    dateYear: '2026',
+    certificateLink:
+      'https://freecodecamp.org/certification/jasseramir/javascript-v9',
+  },
+];
+let certificatesHTML = '';
+
+for (const certificate of certificates) {
+  certificatesHTML += `
+      <article class="certificates__card">
+        <h3 class="certificates__subtitle">${certificate.organization}</h3>
+        <h2 class="certificates__title">${certificate.certificateTitle}</h2>
+
+        <p class="certificates__date">
+          <i class="ri-award-fill"></i> ${certificate.dateDay} ${certificate.dateMonth}, ${certificate.dateYear}
+        </p>
+
+        <a href="${certificate.certificateLink}" class="button certificates__button">
+          <i class="ri-arrow-right-up-line"></i> View Certificate
+        </a>
+
+        <div class="geometric-box"></div>
+      </article>
+    `;
+}
+
+certificatesContainer.innerHTML = certificatesHTML;
 
 /*=============== EMAIL JS ===============*/
 const contactForm = document.getElementById('contact-form');

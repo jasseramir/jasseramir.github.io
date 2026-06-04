@@ -16,6 +16,7 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 - **Sticky header** — shadow effect appears on scroll for visual depth
 - **Working contact form** — sends emails directly via EmailJS, no backend needed
 - **Dynamic project cards** — projects rendered from a JavaScript data array for easy updates
+- **Dynamic certificate cards** — certificates rendered from a JavaScript data array for easy updates
 - **Scroll-to-top button** — appears after scrolling 350px down the page
 - **SEO optimized** — meta tags, Open Graph, Twitter Card, JSON-LD structured data, and canonical URL
 - **Favicon set** — 16×16, 32×32, 180×180 Apple touch icon, and `.ico` file
@@ -24,13 +25,14 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 
 ## Sections
 
-| Section      | Description                                                     |
-| ------------ | --------------------------------------------------------------- |
-| **Home**     | Hero section with profile photo, name, and social links         |
-| **About**    | Short bio, skills list, and a call-to-action button             |
-| **Services** | Three service cards: Web Design, Development, Responsive Design |
-| **Projects** | Cards with live demo links and GitHub source for each project   |
-| **Contact**  | Email form powered by EmailJS + LinkedIn link                   |
+| Section          | Description                                                       |
+| ---------------- | ----------------------------------------------------------------- |
+| **Home**         | Hero section with profile photo, name, and social links           |
+| **About**        | Short bio, skills list, and a call-to-action button               |
+| **Services**     | Three service cards: Web Design, Development, Responsive Design   |
+| **Projects**     | Cards with live demo links and GitHub source for each project     |
+| **Certificates** | Cards showcasing freeCodeCamp certifications with dates and links |
+| **Contact**      | Email form powered by EmailJS + LinkedIn link                     |
 
 ---
 
@@ -52,7 +54,21 @@ An educational puzzle game for learning Roman numerals, with interactive challen
 
 ---
 
-## Tech Stack
+## Certificates Showcased
+
+### Responsive Web Design — freeCodeCamp
+
+- Issued: 16 Feb, 2026
+- Link: [freecodecamp.org/certification/jasseramir/responsive-web-design-v9](https://freecodecamp.org/certification/jasseramir/responsive-web-design-v9)
+
+### JavaScript Algorithms and Data Structures — freeCodeCamp
+
+- Issued: 5 Mar, 2026
+- Link: [freecodecamp.org/certification/jasseramir/javascript-v9](https://freecodecamp.org/certification/jasseramir/javascript-v9)
+
+---
+
+## Adding a New Certificate
 
 | Technology                                     | Purpose                                            |
 | ---------------------------------------------- | -------------------------------------------------- |
