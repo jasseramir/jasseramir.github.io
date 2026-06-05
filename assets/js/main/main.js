@@ -95,7 +95,7 @@ async function sendEmail() {
   try {
     contactBtn.disabled = true;
     contactMessage.style.display = 'block';
-    contactMessage.textContent = 'Sending...';
+    contactMessage.innerHTML = '<span>Sending...</span>';
 
     await emailjs.sendForm(
       'service_3pl6sg8',
@@ -104,14 +104,16 @@ async function sendEmail() {
       '8-3MlNU4tu0G6NJrt',
     );
 
-    contactMessage.textContent = 'Sent successfully';
+    contactMessage.innerHTML =
+      '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
     contactForm.reset();
   } catch (err) {
     console.log(
       'Error: ' +
         (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
     );
-    contactMessage.textContent = 'Failed to send';
+    contactMessage.innerHTML =
+      '<i class="ri-close-line failed"></i> <span>Failed to send</span>';
   } finally {
     contactBtn.disabled = false;
     sendTimeId = setTimeout(() => {
