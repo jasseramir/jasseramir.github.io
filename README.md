@@ -149,7 +149,7 @@ Open `assets/js/data/projects.js` and add a new object to the `projects` array:
   projectType: 'Website',
   projectTitle: 'Project Name',
   projectDescription: 'Short description of the project.',
-  projectGithubSrc: 'https://github.com/jasseramir/your-repo',
+  projectGithubSrc: 'https://github.com/username/your-repo',
 }
 ```
 
@@ -163,7 +163,7 @@ Open `assets/js/data/certificates.js` and add a new object to the `certificates`
 
 ```js
 {
-  organization: 'freeCodeCamp',
+  organization: 'Your certificate issuer',
   certificateTitle: 'Your Certificate Title',
   dateDay: '1',
   dateMonth: 'Jan',    // write month in letters

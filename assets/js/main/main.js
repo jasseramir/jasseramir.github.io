@@ -107,10 +107,8 @@ async function sendEmail() {
     contactMessage.textContent = 'Sent successfully';
     contactForm.reset();
   } catch (err) {
-    console.log(err);
-    contactMessage.textContent =
-      'Error: ' +
-      (err.text || err.message || JSON.stringify(err) || 'Unknown Error');
+    console.log('Error: ' + (err.text || err.message || JSON.stringify(err) || 'Unknown Error'));
+    contactMessage.textContent = 'Failed to send';
   } finally {
     contactBtn.disabled = false;
     sendTimeId = setTimeout(() => {
