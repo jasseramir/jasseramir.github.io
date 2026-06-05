@@ -68,7 +68,7 @@ An educational puzzle game for learning Roman numerals, with interactive challen
 
 ---
 
-## Adding a New Certificate
+## Tech Stack
 
 | Technology                                     | Purpose                                            |
 | ---------------------------------------------- | -------------------------------------------------- |
@@ -91,8 +91,12 @@ jasseramir.github.io/
 │   ├── css/
 │   │   └── styles.css
 │   ├── js/
-│   │   ├── main.js
-│   │   └── scrollreveal.min.js
+│   │   ├── data/
+│   │   │   ├── projects.js
+│   │   │   └── certificates.js
+│   │   └── main/
+│   │       ├── main.js
+│   │       └── scrollreveal.min.js
 │   └── img/
 │       ├── main/
 │       │   ├── home-perfil.webp
@@ -135,17 +139,36 @@ python -m http.server 3000
 
 ## Adding a New Project
 
-Open `assets/js/main.js` and add a new object to the `projects` array:
+Open `assets/js/data/projects.js` and add a new object to the `projects` array:
 
 ```js
 {
-  projectImgSrc: 'project-3.jpg',          // place image in assets/img/projects/
+  projectImgSrc: 'Image file name',          // place image in assets/img/projects/
   projectImgAlt: 'Description of image',
   projectLink: 'https://your-live-site.com',
   projectType: 'Website',
   projectTitle: 'Project Name',
   projectDescription: 'Short description of the project.',
   projectGithubSrc: 'https://github.com/jasseramir/your-repo',
+}
+```
+
+The card will render automatically — no HTML changes needed.
+
+---
+
+## Adding a New Certificate
+
+Open `assets/js/data/certificates.js` and add a new object to the `certificates` array:
+
+```js
+{
+  organization: 'freeCodeCamp',
+  certificateTitle: 'Your Certificate Title',
+  dateDay: '1',
+  dateMonth: 'Jan',    // write month in letters
+  dateYear: '2026',
+  certificateLink: 'https://link-to-your-certificate.com',
 }
 ```
 
