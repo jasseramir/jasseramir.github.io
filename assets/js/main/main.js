@@ -95,7 +95,7 @@ async function sendEmail() {
   try {
     contactBtn.disabled = true;
     contactMessage.style.display = 'block';
-    contactMessage.innerHTML = '<span>Sending...</span>';
+    contactMessage.innerHTML = '<i class="ri-loader-line loader"></i> <span>Sending...</span>';
 
     await emailjs.sendForm(
       'service_3pl6sg8',

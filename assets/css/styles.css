@@ -977,12 +977,21 @@ img {
   font-size: 1rem;
 }
 
+.contact__message .loader {
+  color: var(--first-color);
+  animation: spin 1.25s linear infinite;
+}
+
 .contact__message .success {
   color: #10b981;
 }
 
 .contact__message .failed {
   color: #f43f5e;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Opaque placeholder */
