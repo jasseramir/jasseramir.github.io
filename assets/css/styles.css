@@ -444,6 +444,11 @@ img {
   background-color: var(--first-color);
 }
 
+.button:disabled {
+  background-color: var(--black-color-light);
+  cursor: not-allowed;
+}
+
 /*=============== ABOUT ===============*/
 .about {
   background-color: var(--container-color);
@@ -903,7 +908,6 @@ img {
 
 .contact__button {
   background-color: var(--first-color);
-  cursor: pointer;
 }
 
 .contact__social {
