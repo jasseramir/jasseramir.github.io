@@ -17,7 +17,7 @@ const projects = [
     projectType: 'Library',
     projectTitle: 'EquationJS',
     projectDescription:
-      'A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it',
+      'A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it.',
     projectGithubSrc: 'https://github.com/jasseramir/equationjs',
   },
 ];

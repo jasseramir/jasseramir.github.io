@@ -40,17 +40,16 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 
 ### Poultry Shop — Tior Al-Fath
 
-A modern front-end website for a poultry shop, featuring a clean layout to display products, daily prices, and easy navigation.
+A modern browser-based Snake game built with JavaScript, featuring smooth controls, score tracking, collision detection, and a clean retro-inspired design.
 
-- Live: [tior-alfath.netlify.app](https://tior-alfath.netlify.app)
-- Source: [github.com/jasseramir/tior-alfath](https://github.com/jasseramir/tior-alfath)
+- Live: [jasseramir.github.io/snake](https://jasseramir.github.io/snake)
+- Source: [github.com/jasseramir/snake](https://github.com/jasseramir/snake)
 
 ### Roman Numeral Game
 
-An educational puzzle game for learning Roman numerals, with interactive challenges, progress tracking, and an immersive UI.
+A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it.
 
-- Live: [jasseramir.github.io/roman-numeral-teacher](https://jasseramir.github.io/roman-numeral-teacher/)
-- Source: [github.com/jasseramir/roman-numeral-teacher](https://github.com/jasseramir/roman-numeral-teacher)
+- Source: [github.com/jasseramir/equationjs](https://github.com/jasseramir/equationjs)
 
 ---
 
@@ -102,8 +101,8 @@ jasseramir.github.io/
 │       │   ├── home-perfil.webp
 │       │   └── about-perfil.webp
 │       ├── projects/
-│       │   ├── project-1.jpg
-│       │   └── project-2.jpg
+│       │   ├── snake.webp
+│       │   └── equationjs.webp
 │       ├── design/
 │       │   ├── curved-arrow.svg
 │       │   └── random-lines.svg
