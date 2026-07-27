@@ -20,6 +20,14 @@ const scrollup = document.getElementById('scroll-up');
 /*=============== ACTIVE LINK VARIABLE ===============*/
 const sections = document.querySelectorAll('section[id]');
 
+const navLinkMap = new Map();
+sections.forEach(section => {
+  const id = section.getAttribute('id');
+  const link = document.querySelector(`.nav__menu a[href*="${id}"]`);
+
+  if (link) navLinkMap.set(id, link);
+});
+
 /*=============== SCROLL REVEAL VARIABLE ===============*/
 const sr = ScrollReveal({
   origin: 'top',
@@ -163,17 +171,16 @@ window.addEventListener('scroll', function () {
   // ACTIVE LINK
   const scrollDown = this.scrollY;
 
-  sections.forEach((section) => {
+  sections.forEach(section => {
     const sectionTop = section.offsetTop - 56;
     const sectionHeight = section.offsetHeight;
     const sectionId = section.getAttribute('id');
-    const sectionLink = document.querySelector(
-        `.nav__menu a[href*="${sectionId}"]`,
-    );
+    const sectionLink = navLinkMap.get(sectionId);
 
     if (sectionLink) {
       const isActive =
-        scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight;
+          scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight;
+
       sectionLink.classList.toggle('active-link', isActive);
     }
   });
