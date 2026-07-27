@@ -43,7 +43,7 @@ let sendTimeId = null;
 /* RENDER PROJECTS */
 function renderProjects() {
   projectsContainer.innerHTML = projects.map(project => {
-    return `
+    return project.projectLink ? `
       <article class="projects__card">
         <div class="projects__image">
           <img src="./assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
@@ -51,6 +51,25 @@ function renderProjects() {
           <a href="${project.projectLink}" class="button projects__button">
             <i class="ri-arrow-right-up-line"></i>
           </a>
+        </div>
+
+        <div class="projects__content">
+          <h3 class="projects__subtitle">${project.projectType}</h3>
+          <h2 class="projects__title">${project.projectTitle}</h2>
+
+          <p class="projects__description">${project.projectDescription}</p>
+        </div>
+
+        <div class="projects__buttons">
+          <a href="${project.projectGithubSrc}" target="_blank" class="projects__link">
+            <i class="ri-github-line"></i> View
+          </a>
+        </div>
+      </article>
+    ` : `
+      <article class="projects__card">
+        <div class="projects__image">
+          <img src="./assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
         </div>
 
         <div class="projects__content">
