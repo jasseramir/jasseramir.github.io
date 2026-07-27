@@ -5,15 +5,9 @@ const navToggle = document.getElementById('nav-toggle');
 const navClose = document.getElementById('nav-close');
 const navLinks = document.querySelectorAll('.nav__link');
 
-/*=============== PROJECTS VARIABLES ===============*/
+/*=============== PROJECTS AND CERTIFICATES VARIABLES ===============*/
 const projectsContainer = document.getElementById('projects-container');
-
-let projectsHTML = '';
-
-/*=============== CERTIFICATES VARIABLES ===============*/
 const certificatesContainer = document.getElementById('certificates-container');
-
-let certificatesHTML = '';
 
 /*=============== CONTACT VARIABLES ===============*/
 const contactForm = document.getElementById('contact-form');
@@ -40,8 +34,8 @@ let sendTimeId = null;
 /*=============== FUNCTIONS ===============*/
 /* RENDER PROJECTS */
 function renderProjects() {
-  for (const project of projects) {
-    projectsHTML += `
+  projectsContainer.innerHTML = projects.map(project => {
+    return `
       <article class="projects__card">
         <div class="projects__image">
           <img src="./assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
@@ -65,13 +59,13 @@ function renderProjects() {
         </div>
       </article>
     `;
-  }
+  }).join('');
 }
 
 /* RENDER CERTIFICATES */
 function renderCertificates() {
-  for (const certificate of certificates) {
-    certificatesHTML += `
+  certificatesContainer.innerHTML = certificates.map(certificate => {
+    return `
       <article class="certificates__card">
         <h3 class="certificates__subtitle">${certificate.organization}</h3>
         <h2 class="certificates__title">${certificate.certificateTitle}</h2>
@@ -85,7 +79,7 @@ function renderCertificates() {
         <div class="geometric-box"></div>
       </article>
     `;
-  }
+  }).join('');
 }
 
 /* EMAILJS */
@@ -96,25 +90,25 @@ async function sendEmail() {
     contactBtn.disabled = true;
     contactMessage.style.display = 'block';
     contactMessage.innerHTML =
-      '<i class="ri-loader-line loader"></i> <span>Sending...</span>';
+        '<i class="ri-loader-line loader"></i> <span>Sending...</span>';
 
     await emailjs.sendForm(
-      'service_3pl6sg8',
-      'template_s26dkmr',
-      contactForm,
-      '8-3MlNU4tu0G6NJrt',
+        'service_3pl6sg8',
+        'template_s26dkmr',
+        contactForm,
+        '8-3MlNU4tu0G6NJrt',
     );
 
     contactMessage.innerHTML =
-      '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
+        '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
     contactForm.reset();
   } catch (err) {
     console.log(
       'Error: ' +
-        (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
+      (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
     );
     contactMessage.innerHTML =
-      '<i class="ri-close-line failed"></i> <span>Failed to send</span>';
+        '<i class="ri-close-line failed"></i> <span>Failed to send</span>';
   } finally {
     contactBtn.disabled = false;
     sendTimeId = setTimeout(() => {
@@ -127,13 +121,11 @@ async function sendEmail() {
 // Projects
 if (projectsContainer) {
   renderProjects();
-  projectsContainer.innerHTML += projectsHTML;
 }
 
 // Certificates
 if (certificatesContainer) {
   renderCertificates();
-  certificatesContainer.innerHTML += certificatesHTML;
 }
 
 /*=============== EVENTS ===============*/
@@ -176,7 +168,7 @@ window.addEventListener('scroll', function () {
     const sectionHeight = section.offsetHeight;
     const sectionId = section.getAttribute('id');
     const sectionLink = document.querySelector(
-      `.nav__menu a[href*="${sectionId}"]`,
+        `.nav__menu a[href*="${sectionId}"]`,
     );
 
     if (sectionLink) {
@@ -196,9 +188,9 @@ contactForm.addEventListener('submit', (e) => {
 /* SCROLL REVEAL */
 sr.reveal('.home__perfil, .about__image, .contact__mail', { origin: 'right' });
 sr.reveal(
-  `.home__name, .home__info,
-           .about__container .section__title-1, .about__info, .about__button,
-           .contact__social, .contact__data`,
+    `.home__name, .home__info,
+     .about__container .section__title-1, .about__info, .about__button,
+     .contact__social, .contact__data`,
   { origin: 'left' },
 );
 sr.reveal('.services__card, .projects__card, .certificates__card', {
