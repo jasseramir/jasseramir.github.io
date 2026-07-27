@@ -38,14 +38,14 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 
 ## Projects Showcased
 
-### Poultry Shop — Tior Al-Fath
+### Snake Game
 
 A modern browser-based Snake game built with JavaScript, featuring smooth controls, score tracking, collision detection, and a clean retro-inspired design.
 
 - Live: [jasseramir.github.io/snake](https://jasseramir.github.io/snake)
 - Source: [github.com/jasseramir/snake](https://github.com/jasseramir/snake)
 
-### Roman Numeral Game
+### EquationJS — Equation Solver
 
 A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it.
 
