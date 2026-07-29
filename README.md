@@ -103,22 +103,24 @@ jasseramir.github.io/
 │   │   └── main/
 │   │       ├── main.js
 │   │       └── scrollreveal.min.js
-│   └── img/
-│       ├── main/
-│       │   ├── home-perfil.webp
-│       │   └── about-perfil.webp
-│       ├── projects/
-│       │   ├── snake.webp
-│       │   ├── burger.webp
-│       │   └── equationjs.webp
-│       ├── design/
-│       │   ├── curved-arrow.svg
-│       │   └── random-lines.svg
-│       └── logos/
-│           ├── favicon-16x16.png
-│           ├── favicon-32x32.png
-│           ├── apple-touch-icon.png
-│           └── preview.png
+│   ├── img/
+│   │   ├── main/
+│   │   │   ├── home-perfil.webp
+│   │   │   └── about-perfil.webp
+│   │   ├── projects/
+│   │   │   ├── snake.webp
+│   │   │   ├── burger.webp
+│   │   │   └── equationjs.webp
+│   │   ├── design/
+│   │   │   ├── curved-arrow.svg
+│   │   │   └── random-lines.svg
+│   │   └── logos/
+│   │       ├── favicon-16x16.png
+│   │       ├── favicon-32x32.png
+│   │       ├── apple-touch-icon.png
+│   │       └── preview.png
+│   └── docs/
+│       └── jasser_amir_resume.pdf
 ```
 
 ---
