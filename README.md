@@ -38,6 +38,13 @@ A personal portfolio website built from scratch with vanilla HTML, CSS, and Java
 
 ## Projects Showcased
 
+### Burger Website
+
+A modern burger restaurant website built with HTML, CSS, and Vanilla JavaScript, featuring a responsive layout, smooth animations, and carefully crafted UI components.
+
+- Live: [jasseramir.github.io/burger-website](https://jasseramir.github.io/burger-website)
+- Source: [github.com/jasseramir/burger-website](https://github.com/jasseramir/burger-website)
+
 ### Snake Game
 
 A modern browser-based Snake game built with JavaScript, featuring smooth controls, score tracking, collision detection, and a clean retro-inspired design.
