@@ -109,6 +109,7 @@ jasseramir.github.io/
 │       │   └── about-perfil.webp
 │       ├── projects/
 │       │   ├── snake.webp
+│       │   ├── burger.webp
 │       │   └── equationjs.webp
 │       ├── design/
 │       │   ├── curved-arrow.svg
