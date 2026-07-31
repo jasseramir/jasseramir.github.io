@@ -14,6 +14,9 @@ const contactForm = document.getElementById('contact-form');
 const contactMessage = document.getElementById('contact-message');
 const contactBtn = document.getElementById('contact-button');
 
+// honeypot
+const honeypotInput = document.getElementById('website');
+
 /*=============== SCROLL UP VARIABLE ===============*/
 const scrollup = document.getElementById('scroll-up');
 
@@ -118,6 +121,13 @@ async function sendEmail() {
     contactMessage.style.display = 'block';
     contactMessage.innerHTML =
         '<i class="ri-loader-line loader"></i> <span>Sending...</span>';
+
+    if (honeypotInput.value !== '') {
+      contactMessage.innerHTML =
+        '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
+      contactForm.reset();
+      return;
+    }
 
     await emailjs.sendForm(
         'service_3pl6sg8',

@@ -362,6 +362,18 @@
 
             <form action="" class="contact__form" id="contact-form">
               <div class="contact__group">
+                <!-- Honeypot Field (Hidden for real humans, visible to bots) -->
+                <div class="contact__box honeypot-box" aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    id="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                    placeholder="https://example.com"
+                  />
+                </div>
+
                 <div class="contact__box">
                   <input
                     type="text"

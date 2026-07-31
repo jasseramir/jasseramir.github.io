@@ -846,6 +846,18 @@ img {
   height: 58px;
 }
 
+.honeypot-box {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .contact__input,
 .contact__button {
   font-family: var(--body-font);
