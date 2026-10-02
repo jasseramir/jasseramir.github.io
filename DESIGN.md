@@ -49,11 +49,11 @@ Cards use one of three tones, set by a class:
 
 ## Typography
 
-**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), loaded from Google Fonts, with `sans-serif` fallback.
+**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), loaded from Google Fonts, with `sans-serif` fallback. The only exception is the hero code window, which uses the system monospace stack.
 
 | Use | Size | Weight | Notes |
 | --- | --- | --- | --- |
-| Hero name (`h1`) | 2.35rem, 4.5rem from 640px | 800 | `line-height: 1.05`, `letter-spacing: -.025em` |
+| Hero headline (`h1`) | 2.25rem, 3.5rem from 640px, 4rem from 1024px | 800 | `line-height: 1.05`, `letter-spacing: -.025em`, key words in cobalt |
 | Section title (`.title`) | 1.875rem, 3rem from 640px | 800 | Cobalt, `letter-spacing: -.025em` |
 | Card heading | 1.35rem to 1.5rem | 800 | Tight tracking `-.025em` |
 | Contact heading | 1.5rem, 2.25rem from 1024px | 800 | `line-height: 1.2` |
@@ -73,7 +73,7 @@ Headings use negative letter-spacing. Uppercase labels use positive letter-spaci
 | Cards, panels, form card | 24px, 32px from 640px |
 | Hero frame | 24px, 32px from 640px |
 | Hero inner card | 18px, 20px from 640px |
-| Stats bar | 14px, 16px from 640px |
+| Hero code window and tiles | 18px, 20px from 640px |
 | Inputs, icon tiles | 14px |
 | Certificate tiles | 16px |
 | Pills, buttons, chips, tags | 999px (fully round) |
@@ -95,7 +95,7 @@ Mobile-first. Breakpoints:
 | --- | --- |
 | below 640px | Metrics become a vertical list with cobalt bullets. Buttons stack full width. |
 | 640px | Larger type, padding, radii, and section gaps. Form fields split into two columns. Footer goes horizontal. |
-| 768px | Desktop nav appears and the drawer and burger are removed. Services form three columns. Projects form two columns. Certificates become tiles in a wrapping row. Stats bar becomes a row. |
+| 768px | Desktop nav appears and the drawer and burger are removed. Services form three columns. Projects form two columns. Certificates become tiles in a wrapping row. Hero becomes two columns at 1024px. |
 | 1024px | 12-column grid for About (7 / 5) and Contact (5 / 7). Projects form three columns. |
 
 Certificate tiles use `flex: 1 1 calc((100% - 48px) / 3)`, so there are at most three per row, fewer certificates stretch to fill the row, and extras wrap.
@@ -130,7 +130,7 @@ Icons are inline SVGs on a 24×24 viewBox, outline style. One global rule sets `
 ### Navigation
 
 - **Desktop:** text links, 800 weight. The active link turns cobalt (`.on`).
-- **Mobile:** a round burger button opens a drawer that slides down from the top with a 28px bottom radius. It closes on link tap or the Escape key.
+- **Mobile:** a round burger button opens a drawer that slides down from the top with a 28px bottom radius. The drawer has only centered links (no logo, close icon, or link dividers), over a dimmed backdrop. A tap anywhere, a swipe up, or the Escape key closes it.
 - The header is fixed, uses the page background, and has no border or shadow.
 
 ### Forms

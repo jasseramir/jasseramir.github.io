@@ -14,14 +14,36 @@ const ARROW =
 /*=============== MOBILE MENU ===============*/
 const burger = $('burger');
 const drawer = $('drawer');
+const scrim = $('scrim');
+let menuOpen = false;
 function setMenu(open) {
+  menuOpen = open;
   drawer.classList.toggle('open', open);
+  scrim.classList.toggle('open', open);
   burger.setAttribute('aria-expanded', open);
 }
-burger.addEventListener('click', () => setMenu(true));
-$('close').addEventListener('click', () => setMenu(false));
-drawer.querySelectorAll('a').forEach((a) =>
-  a.addEventListener('click', () => setMenu(false)),
+burger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  setMenu(true);
+});
+// tap anywhere (links, backdrop, drawer) closes the menu
+document.addEventListener('click', () => menuOpen && setMenu(false));
+// swipe up closes the menu
+let touchY = null;
+document.addEventListener(
+  'touchstart',
+  (e) => (touchY = menuOpen ? e.touches[0].clientY : null),
+  { passive: true },
+);
+document.addEventListener(
+  'touchmove',
+  (e) => {
+    if (touchY !== null && touchY - e.touches[0].clientY > 40) {
+      setMenu(false);
+      touchY = null;
+    }
+  },
+  { passive: true },
 );
 document.addEventListener(
   'keydown',
@@ -69,6 +91,7 @@ function renderProjects() {
 }
 
 renderProjects();
+
 $('stat-projects').textContent = projects.length;
 $('stat-certs').textContent = certificates.length;
 

@@ -13,7 +13,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 - **Zero build step.** Open `index.html` and it works. Deploys as-is on GitHub Pages.
 - **Data-driven content.** Project cards, certificate cards, and the hero counters are generated from `projects.js` and `certificates.js`. Adding an entry needs no HTML changes.
 - **Flat, token-based design system.** Pastel palette, no shadows, one typeface. See [DESIGN.md](DESIGN.md).
-- **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px.
+- **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px (tap anywhere or swipe up to close).
 - **Accessible by default.** Semantic landmarks, labelled navigation, `aria-expanded` on the menu button, `aria-live` form status, visible focus rings, and `prefers-reduced-motion` support.
 - **Scroll-spy navigation.** The active link follows the section in view using `IntersectionObserver`.
 - **Contact form with spam protection.** EmailJS delivery plus a hidden honeypot field.
@@ -26,7 +26,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 
 | Section | What it shows |
 | --- | --- |
-| **Home** | Name, role, location, live counters (projects, certificates), resume and project shortcuts |
+| **Home** | Headline, availability, a flat browser-window illustration, live counters (projects, certificates), resume and project shortcuts |
 | **About** | Short bio, approach tags, and the core skills list |
 | **Services** | Web Design, Development, Responsive Design |
 | **Projects** | Cards with live demo and repository links |

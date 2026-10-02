@@ -106,17 +106,6 @@
         </button>
       </div>
       <nav class="drawer" id="drawer" aria-label="Mobile">
-        <div class="drawer-top">
-          <a href="#hero" class="logo">
-            <span class="dot"></span>
-            <span>Jasser</span>
-          </a>
-          <button class="burger" id="close" aria-label="Close navigation menu">
-            <svg viewBox="0 0 24 24">
-              <path d="M6 6l12 12M18 6L6 18"/>
-            </svg>
-          </button>
-        </div>
         <a class="l" href="#hero">Home</a>
         <a class="l" href="#about">About</a>
         <a class="l" href="#services">Services</a>
@@ -124,39 +113,27 @@
         <a class="l" href="#certificates">Certificates</a>
         <a class="l" href="#contact">Contact</a>
       </nav>
+      <div class="scrim" id="scrim"></div>
     </header>
     <main class="wrap">
       <section id="hero">
         <div class="hero">
-          <div class="hero-card">
-            <div class="row">
-              <span class="pill lav label">Front-End Web Developer</span>
-              <span class="pill soft" style="font-weight:600;color:var(--g6)">
-                Based in Egypt
-              </span>
-            </div>
-            <h1>Jasser Amir</h1>
-            <p>
-              Crafting sleek, responsive, and high-performance user interfaces.
-              Turning complex functional logic into crisp, modern, and pure flat
-              digital aesthetics.
-            </p>
-            <hr />
-            <div class="stats">
-              <div class="metrics">
-                <div>
-                  <b id="stat-projects"></b>
-                  <span>Projects Built</span>
-                </div>
-                <div>
-                  <b id="stat-certs"></b>
-                  <span>Certificates Earned</span>
-                </div>
-                <div>
-                  <b>5</b>
-                  <span>Core Skills</span>
-                </div>
+          <div class="hero-grid">
+            <div class="hero-card">
+              <div class="row">
+                <span class="pill lav label">
+                  <span class="live"></span>
+                  Open to work
+                </span>
+                <span class="pill soft" style="font-weight:600;color:var(--g6)">
+                  Based in Egypt
+                </span>
               </div>
+              <h1>Hi, I'm Jasser.<br />I build <em>clean, fast</em> web interfaces.</h1>
+              <p>
+                Front-end developer turning ideas into responsive, accessible
+                websites with HTML, CSS, and vanilla JavaScript.
+              </p>
               <div class="actions">
                 <a class="btn lg navy" href="#projects">Explore Work</a>
                 <a class="btn lg lav" href="assets/docs/jasser_amir_resume.pdf">
@@ -164,6 +141,31 @@
                 </a>
               </div>
             </div>
+            <aside class="hero-side" aria-label="Highlights">
+              <div class="code" aria-hidden="true">
+                <div class="code-bar">
+                  <i></i><i></i><i></i>
+                  <span>jasser.js</span>
+                </div>
+                <pre><code><span class="k">const</span> developer = {
+  <span class="p">name</span>: <span class="s">"Jasser Amir"</span>,
+  <span class="p">role</span>: <span class="s">"Front-End Developer"</span>,
+  <span class="p">based</span>: <span class="s">"Egypt"</span>,
+  <span class="p">focus</span>: <span class="s">"fast &amp; accessible UI"</span>,
+  <span class="p">openToWork</span>: <span class="k">true</span>,
+};
+
+developer.<span class="k">build</span>();</code></pre>
+              </div>
+              <div class="tile t-navy">
+                <b id="stat-projects"></b>
+                <span>Projects <br> Built</span>
+              </div>
+              <div class="tile t-white">
+                <b id="stat-certs"></b>
+                <span>Certificates <br> Earned</span>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
