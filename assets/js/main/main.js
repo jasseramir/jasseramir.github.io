@@ -161,3 +161,55 @@ contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
   sendEmail();
 });
+
+/*=============== SCROLL REVEAL ===============*/
+// Everything rises from the bottom, fast, one piece at a time as it scrolls
+// into view. Skipped for users who prefer reduced motion.
+if (
+  typeof ScrollReveal === 'function' &&
+  ScrollReveal.isSupported() &&
+  !matchMedia('(prefers-reduced-motion: reduce)').matches
+) {
+  const sr = ScrollReveal({
+    origin: 'bottom',
+    distance: '24px',
+    duration: 1500,
+    easing: 'cubic-bezier(.2, .7, .2, 1)',
+    opacity: 0,
+    viewFactor: 0.1,
+    viewOffset: { bottom: 40 },
+    cleanup: true,
+    once: true,
+  });
+
+  // Reveals every match of `selector` on its own. Elements that sit in the
+  // same row (cards, tiles, certificates) enter one after another, `step` ms
+  // apart; with `inOrder`, the whole group is staggered by position instead.
+  const STEP = 200;
+  function reveal(selector, { base = 0, inOrder = false } = {}) {
+    const els = [...document.querySelectorAll(selector)];
+    els.forEach((el, i) => {
+      const n = inOrder
+        ? i
+        : els.slice(0, i).filter((p) => p.offsetTop === el.offsetTop).length;
+      sr.reveal(el, { delay: base + n * STEP });
+    });
+  }
+
+  // home: each piece on its own
+  reveal('.hero-card > *', { base: 50, inOrder: true });
+  reveal('.hero-side > *', { base: 150, inOrder: true });
+
+  // section titles
+  reveal('.title');
+
+  // about, services, projects, certificates, contact
+  reveal('.split > *');
+  reveal('.cards3 > .card');
+  reveal('.proj-grid > .card');
+  reveal('.certs-head');
+  reveal('.cert');
+
+  // footer
+  reveal('.flogo, footer ul', { inOrder: true });
+}

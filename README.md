@@ -15,6 +15,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 - **Flat, token-based design system.** Pastel palette, no shadows, one typeface. See [DESIGN.md](DESIGN.md).
 - **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px (tap anywhere or swipe up to close).
 - **Accessible by default.** Semantic landmarks, labelled navigation, `aria-expanded` on the menu button, `aria-live` form status, visible focus rings, and `prefers-reduced-motion` support.
+- **Scroll reveal animations.** Every block rises from the bottom in 300ms as it scrolls into view, with cards, tiles, and certificates staggered 80ms apart. Powered by ScrollReveal and disabled under `prefers-reduced-motion`.
 - **Scroll-spy navigation.** The active link follows the section in view using `IntersectionObserver`.
 - **Contact form with spam protection.** EmailJS delivery plus a hidden honeypot field.
 - **XSS-safe rendering.** All data-driven strings are HTML-escaped before being injected.
@@ -41,7 +42,8 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | --- | --- |
 | HTML5 | Semantic structure |
 | CSS3 | Custom properties, Grid, Flexbox, media queries |
-| JavaScript (ES6+) | Rendering from data, menu, scroll-spy, form handling |
+| JavaScript (ES6+) | Rendering from data, menu, scroll-spy, scroll reveal, form handling |
+| [ScrollReveal](https://scrollrevealjs.org/) v4 | Scroll-in animations, bundled locally in `assets/js/main/scrollreveal.min.js` |
 | [EmailJS](https://www.emailjs.com/) | Client-side email sending, loaded from jsDelivr |
 | [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Typeface, loaded from Google Fonts |
 
@@ -66,14 +68,15 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
     │   │   ├── projects.js       # Project cards data
     │   │   └── certificates.js   # Certificate cards data
     │   └── main/
-    │       └── main.js           # Menu, scroll-spy, rendering, contact form
+    │       ├── scrollreveal.min.js  # ScrollReveal library
+    │       └── main.js           # Menu, scroll-spy, rendering, reveal animations, contact form
     ├── img/
     │   └── logos/                # Favicons, Apple touch icon, social preview
     └── docs/
         └── jasser_amir_resume.pdf
 ```
 
-Script order matters. `index.html` loads EmailJS, then `projects.js`, then `certificates.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals.
+Script order matters. `index.html` loads EmailJS, then `projects.js`, then `certificates.js`, then `scrollreveal.min.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals and the `ScrollReveal` global.
 
 ---
 

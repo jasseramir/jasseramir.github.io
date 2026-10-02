@@ -143,11 +143,12 @@ Form status text appears next to the send button and hides itself after 3.5 seco
 
 Motion is minimal and purely functional.
 
+- Scroll reveal: every block rises 24px from the bottom while fading in, over 300ms, once, as it enters the viewport. The header is never animated. Each piece of the hero, each section title, and each card, tile, and certificate reveals on its own. Items in the same row are staggered 80ms apart. Powered by ScrollReveal, configured at the bottom of `main.js`.
 - Smooth scrolling for anchor navigation.
 - Short color transitions on links and buttons (0.15s to 0.5s).
 - Drawer slide of 0.35s.
 
-Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are turned off.
+Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are turned off, and scroll reveal is not initialized.
 
 ## Accessibility
 
