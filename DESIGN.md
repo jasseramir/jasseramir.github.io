@@ -95,8 +95,8 @@ Mobile-first. Breakpoints:
 | --- | --- |
 | below 640px | Metrics become a vertical list with cobalt bullets. Buttons stack full width. |
 | 640px | Larger type, padding, radii, and section gaps. Form fields split into two columns. Footer goes horizontal. |
-| 768px | Desktop nav appears and the drawer and burger are removed. Services form three columns. Projects form two columns. Certificates become tiles in a wrapping row. Hero becomes two columns at 1024px. |
-| 1024px | 12-column grid for About (7 / 5) and Contact (5 / 7). Projects form three columns. |
+| 768px | Desktop nav appears and the drawer and burger are removed. Services stack in a single column. Projects form two columns. Certificates become tiles in a wrapping row. Hero becomes two columns at 1024px. |
+| 1024px | 12-column grid for About (7 / 5) and Contact (5 / 7). Services and Projects form three columns. |
 
 Certificate tiles use `flex: 1 1 calc((100% - 48px) / 3)`, so there are at most three per row, fewer certificates stretch to fill the row, and extras wrap.
 
