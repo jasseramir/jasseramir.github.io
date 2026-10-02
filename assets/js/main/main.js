@@ -209,7 +209,4 @@ if (
   reveal('.proj-grid > .card');
   reveal('.certs-head');
   reveal('.cert');
-
-  // footer
-  reveal('.flogo, footer ul', { inOrder: true });
 }
