@@ -1,234 +1,140 @@
-/*=============== HEADER VARIABLES ===============*/
-const header = document.getElementById('header');
-const navMenu = document.getElementById('nav-menu');
-const navToggle = document.getElementById('nav-toggle');
-const navClose = document.getElementById('nav-close');
-const navLinks = document.querySelectorAll('.nav__link');
+/*=============== HELPERS ===============*/
+const $ = (id) => document.getElementById(id);
+const ESCAPES = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ESCAPES[c]);
+const ARROW =
+  '<svg viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>';
 
-/*=============== PROJECTS AND CERTIFICATES VARIABLES ===============*/
-const projectsContainer = document.getElementById('projects-container');
-const certificatesContainer = document.getElementById('certificates-container');
+/*=============== MOBILE MENU ===============*/
+const burger = $('burger');
+const drawer = $('drawer');
+function setMenu(open) {
+  drawer.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+}
+burger.addEventListener('click', () => setMenu(true));
+$('close').addEventListener('click', () => setMenu(false));
+drawer.querySelectorAll('a').forEach((a) =>
+  a.addEventListener('click', () => setMenu(false)),
+);
+document.addEventListener(
+  'keydown',
+  (e) => e.key === 'Escape' && setMenu(false),
+);
 
-/*=============== CONTACT VARIABLES ===============*/
-const contactForm = document.getElementById('contact-form');
-const contactMessage = document.getElementById('contact-message');
-const contactBtn = document.getElementById('contact-button');
+/*=============== ACTIVE LINK ===============*/
+const navLinks = document.querySelectorAll('#nav a, #drawer a.l');
+const spy = new IntersectionObserver(
+  (entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    navLinks.forEach((l) =>
+      l.classList.toggle('on', l.getAttribute('href') === `#${e.target.id}`),
+    );
+  }),
+  { rootMargin: '-45% 0px -50% 0px' },
+);
+document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
 
-// honeypot
-const honeypotInput = document.getElementById('website');
+/*=============== PROJECTS ===============*/
+const projectsContainer = $('projects-container');
+const tones = ['c-white', 'c-sky', 'c-lav'];
 
-/*=============== SCROLL UP VARIABLE ===============*/
-const scrollup = document.getElementById('scroll-up');
+function projectCard(p, i) {
+  const tone = tones[i % 3];
+  const white = tone === 'c-white';
+  const repo = `<a class="btn navy" href="${esc(p.projectGithubSrc)}" target="_blank" rel="noopener">${p.projectLink ? 'GitHub' : `View Repository ${ARROW}`}</a>`;
+  const actions = p.projectLink
+    ? `<a class="btn navy" href="${esc(p.projectLink)}" target="_blank" rel="noopener">Live Demo ${ARROW}</a>
+       <a class="btn ${white ? 'soft' : 'white'}" href="${esc(p.projectGithubSrc)}" target="_blank" rel="noopener">View Repository ${ARROW}</a>`
+    : repo;
+  return `
+    <article class="card proj ${tone}">
+      <div>
+        <span class="pill ${white ? 'lav' : 'white'}">${esc(p.projectType)}</span>
+        <h3>${esc(p.projectTitle)}</h3>
+        <p>${esc(p.projectDescription)}</p>
+      </div>
+      <div class="foot row">${actions}</div>
+    </article>`;
+}
 
-/*=============== ACTIVE LINK VARIABLE ===============*/
-const sections = document.querySelectorAll('section[id]');
+function renderProjects() {
+  projectsContainer.innerHTML = projects.map(projectCard).join('');
+}
 
-const navLinkMap = new Map();
-sections.forEach(section => {
-  const id = section.getAttribute('id');
-  const link = document.querySelector(`.nav__menu a[href*="${id}"]`);
+renderProjects();
+$('stat-projects').textContent = projects.length;
+$('stat-certs').textContent = certificates.length;
 
-  if (link) navLinkMap.set(id, link);
-});
+/*=============== CERTIFICATES ===============*/
+const orgs = [...new Set(certificates.map((c) => c.organization))].join(', ');
+$('certs-issuer').textContent =
+  `Official developer certifications issued by ${orgs}`;
+$('certificates-container').innerHTML = certificates.map((c) => `
+  <div class="cert">
+    <div class="cert-data">
+      <span class="label">${esc(c.organization)}</span>
+      <h4>${esc(c.certificateTitle)}</h4>
+      <p>Issued on ${esc(c.dateDay)} ${esc(c.dateMonth)}, ${esc(c.dateYear)}</p>
+    </div>
+    <a class="btn white" href="${esc(c.certificateLink)}" target="_blank" rel="noopener">View Certificate ${ARROW}</a>
+  </div>`).join('');
 
-/*=============== SCROLL REVEAL VARIABLE ===============*/
-const sr = ScrollReveal({
-  origin: 'top',
-  distance: '60px',
-  duration: 2500,
-  delay: 200,
-});
-
-/*=============== EMAILJS TIME ID ===============*/
+/*=============== CONTACT (EMAILJS) ===============*/
+const contactForm = $('contact-form');
+const contactMessage = $('contact-message');
+const contactBtn = $('contact-button');
+const honeypotInput = $('website');
 let sendTimeId = null;
 
-/*=============== FUNCTIONS ===============*/
-/* RENDER PROJECTS */
-function renderProjects() {
-  projectsContainer.innerHTML = projects.map(project => {
-    return project.projectLink ? `
-      <article class="projects__card">
-        <div class="projects__image">
-          <img src="./assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
-
-          <a href="${project.projectLink}" class="button projects__button">
-            <i class="ri-arrow-right-up-line"></i>
-          </a>
-        </div>
-
-        <div class="projects__content">
-          <h3 class="projects__subtitle">${project.projectType}</h3>
-          <h2 class="projects__title">${project.projectTitle}</h2>
-
-          <p class="projects__description">${project.projectDescription}</p>
-        </div>
-
-        <div class="projects__buttons">
-          <a href="${project.projectGithubSrc}" target="_blank" class="projects__link">
-            <i class="ri-github-line"></i> View
-          </a>
-        </div>
-      </article>
-    ` : `
-      <article class="projects__card">
-        <div class="projects__image">
-          <img src="./assets/img/projects/${project.projectImgSrc}" alt="${project.projectImgAlt}" class="projects__img">
-        </div>
-
-        <div class="projects__content">
-          <h3 class="projects__subtitle">${project.projectType}</h3>
-          <h2 class="projects__title">${project.projectTitle}</h2>
-
-          <p class="projects__description">${project.projectDescription}</p>
-        </div>
-
-        <div class="projects__buttons">
-          <a href="${project.projectGithubSrc}" target="_blank" class="projects__link">
-            <i class="ri-github-line"></i> View
-          </a>
-        </div>
-      </article>
-    `;
-  }).join('');
+function setStatus(text) {
+  contactMessage.textContent = text;
+  contactMessage.style.display = 'block';
 }
 
-/* RENDER CERTIFICATES */
-function renderCertificates() {
-  certificatesContainer.innerHTML = certificates.map(certificate => {
-    return `
-      <article class="certificates__card">
-        <h3 class="certificates__subtitle">${certificate.organization}</h3>
-        <h2 class="certificates__title">${certificate.certificateTitle}</h2>
-
-        <p class="certificates__date"><i class="ri-award-fill"></i> ${certificate.dateDay} ${certificate.dateMonth}, ${certificate.dateYear}</p>
-
-        <a href="${certificate.certificateLink}" class="button certificates__button">
-          <i class="ri-arrow-right-up-line"></i> View Certificate
-        </a>
-
-        <div class="geometric-box"></div>
-      </article>
-    `;
-  }).join('');
-}
-
-/* EMAILJS */
 async function sendEmail() {
   if (sendTimeId) clearTimeout(sendTimeId);
 
   try {
     contactBtn.disabled = true;
-    contactMessage.style.display = 'block';
-    contactMessage.innerHTML =
-        '<i class="ri-loader-line loader"></i> <span>Sending...</span>';
+    setStatus('Sending...');
 
     if (honeypotInput.value !== '') {
-      contactMessage.innerHTML =
-        '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
+      setStatus('Sent successfully');
       contactForm.reset();
       return;
     }
 
     await emailjs.sendForm(
-        'service_3pl6sg8',
-        'template_s26dkmr',
-        contactForm,
-        '8-3MlNU4tu0G6NJrt',
+      'service_3pl6sg8',
+      'template_s26dkmr',
+      contactForm,
+      '8-3MlNU4tu0G6NJrt',
     );
 
-    contactMessage.innerHTML =
-        '<i class="ri-check-line success"></i> <span>Sent successfully</span>';
+    setStatus('Sent successfully');
     contactForm.reset();
   } catch (err) {
     console.log(
       'Error: ' +
-      (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
+        (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
     );
-    contactMessage.innerHTML =
-        '<i class="ri-close-line failed"></i> <span>Failed to send</span>';
+    setStatus('Failed to send. Please try again.');
   } finally {
     contactBtn.disabled = false;
     sendTimeId = setTimeout(() => {
       contactMessage.style.display = 'none';
-    }, 3000);
+    }, 3500);
   }
 }
 
-/*=============== CONDITIONS ===============*/
-// Projects
-if (projectsContainer) {
-  renderProjects();
-}
-
-// Certificates
-if (certificatesContainer) {
-  renderCertificates();
-}
-
-/*=============== EVENTS ===============*/
-/* SHOW MENU */
-if (navToggle) {
-  navToggle.addEventListener('click', () => {
-    navMenu.classList.add('show-menu');
-  });
-}
-
-if (navClose) {
-  navClose.addEventListener('click', () => {
-    navMenu.classList.remove('show-menu');
-  });
-}
-
-/* HIDE MENU FOR MOBILE */
-navLinks.forEach((navLink) =>
-  navLink.addEventListener('click', () => {
-    navMenu.classList.contains('show-menu') &&
-      navMenu.classList.remove('show-menu');
-  }),
-);
-
-/* SCROLL EVENTS */
-window.addEventListener('scroll', function () {
-  // ADD SHADOW HEADER
-  header.classList.toggle('shadow-header', this.scrollY >= 50);
-
-  // SHOW SCROLL UP
-  this.scrollY >= 350
-    ? scrollup.classList.add('show-scroll')
-    : scrollup.classList.remove('show-scroll');
-
-  // ACTIVE LINK
-  const scrollDown = this.scrollY;
-
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 56;
-    const sectionHeight = section.offsetHeight;
-    const sectionId = section.getAttribute('id');
-    const sectionLink = navLinkMap.get(sectionId);
-
-    if (sectionLink) {
-      const isActive =
-          scrollDown > sectionTop && scrollDown <= sectionTop + sectionHeight;
-
-      sectionLink.classList.toggle('active-link', isActive);
-    }
-  });
-});
-
-/* SEND EMAIL */
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
   sendEmail();
-});
-
-/* SCROLL REVEAL */
-sr.reveal('.home__perfil, .about__image, .contact__mail', { origin: 'right' });
-sr.reveal(
-    `.home__name, .home__info,
-     .about__container .section__title-1, .about__info, .about__button,
-     .contact__social, .contact__data`,
-  { origin: 'left' },
-);
-sr.reveal('.services__card, .projects__card, .certificates__card', {
-  interval: 100,
 });

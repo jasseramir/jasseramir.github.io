@@ -1,195 +1,152 @@
-# Jasser Amir — Personal Portfolio
+# Jasser Amir — Portfolio
 
-A personal portfolio website built from scratch with vanilla HTML, CSS, and JavaScript. Designed to showcase my front-end development projects, skills, and services — with a focus on clean UI, smooth animations, and a fully responsive layout.
+![Jasser Amir — Front-End Web Developer](assets/img/logos/preview.png)
+
+A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No framework, no build step, no dependencies to install. Projects and certificates are rendered from small data files, and the contact form sends real email through EmailJS.
 
 **Live site:** [jasseramir.github.io](https://jasseramir.github.io)
 
-**Inspired by:** [Bedimcode](https://github.com/bedimcode)
-
 ---
 
-## Features
+## Highlights
 
-- **Responsive design** — fluid layout that works seamlessly on mobile, tablet, and desktop
-- **Scroll animations** — elements reveal on scroll using ScrollReveal.js
-- **Active nav highlighting** — navigation link updates automatically as you scroll through sections
-- **Sticky header** — shadow effect appears on scroll for visual depth
-- **Working contact form** — sends emails directly via EmailJS, no backend needed
-- **Dynamic project cards** — projects rendered from a JavaScript data array for easy updates
-- **Dynamic certificate cards** — certificates rendered from a JavaScript data array for easy updates
-- **Scroll-to-top button** — appears after scrolling 350px down the page
-- **SEO optimized** — meta tags, Open Graph, Twitter Card, JSON-LD structured data, and canonical URL
-- **Favicon set** — 16×16, 32×32, 180×180 Apple touch icon, and `.ico` file
+- **Zero build step.** Open `index.html` and it works. Deploys as-is on GitHub Pages.
+- **Data-driven content.** Project cards, certificate cards, and the hero counters are generated from `projects.js` and `certificates.js`. Adding an entry needs no HTML changes.
+- **Flat, token-based design system.** Pastel palette, no shadows, one typeface. See [DESIGN.md](DESIGN.md).
+- **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px.
+- **Accessible by default.** Semantic landmarks, labelled navigation, `aria-expanded` on the menu button, `aria-live` form status, visible focus rings, and `prefers-reduced-motion` support.
+- **Scroll-spy navigation.** The active link follows the section in view using `IntersectionObserver`.
+- **Contact form with spam protection.** EmailJS delivery plus a hidden honeypot field.
+- **XSS-safe rendering.** All data-driven strings are HTML-escaped before being injected.
+- **SEO ready.** Meta tags, Open Graph, Twitter Card, JSON-LD `Person` schema, canonical URL, and a full favicon set.
 
 ---
 
 ## Sections
 
-| Section          | Description                                                       |
-| ---------------- | ----------------------------------------------------------------- |
-| **Home**         | Hero section with profile photo, name, and social links           |
-| **About**        | Short bio, skills list, and a call-to-action button               |
-| **Services**     | Three service cards: Web Design, Development, Responsive Design   |
-| **Projects**     | Cards with live demo links and GitHub source for each project     |
-| **Certificates** | Cards showcasing freeCodeCamp certifications with dates and links |
-| **Contact**      | Email form powered by EmailJS + LinkedIn link                     |
-
----
-
-## Projects Showcased
-
-### Burger Website
-
-A modern burger restaurant website built with HTML, CSS, and Vanilla JavaScript, featuring a responsive layout, smooth animations, and carefully crafted UI components.
-
-- Live: [jasseramir.github.io/burger-website](https://jasseramir.github.io/burger-website)
-- Source: [github.com/jasseramir/burger-website](https://github.com/jasseramir/burger-website)
-
-### Snake Game
-
-A modern browser-based Snake game built with JavaScript, featuring smooth controls, score tracking, collision detection, and a clean retro-inspired design.
-
-- Live: [jasseramir.github.io/snake](https://jasseramir.github.io/snake)
-- Source: [github.com/jasseramir/snake](https://github.com/jasseramir/snake)
-
-### EquationJS — Equation Solver
-
-A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it.
-
-- Source: [github.com/jasseramir/equationjs](https://github.com/jasseramir/equationjs)
-
----
-
-## Certificates Showcased
-
-### Responsive Web Design — freeCodeCamp
-
-- Issued: 16 Feb, 2026
-- Link: [freecodecamp.org/certification/jasseramir/responsive-web-design-v9](https://freecodecamp.org/certification/jasseramir/responsive-web-design-v9)
-
-### JavaScript Algorithms and Data Structures — freeCodeCamp
-
-- Issued: 5 Mar, 2026
-- Link: [freecodecamp.org/certification/jasseramir/javascript-v9](https://freecodecamp.org/certification/jasseramir/javascript-v9)
+| Section | What it shows |
+| --- | --- |
+| **Home** | Name, role, location, live counters (projects, certificates), resume and project shortcuts |
+| **About** | Short bio, approach tags, and the core skills list |
+| **Services** | Web Design, Development, Responsive Design |
+| **Projects** | Cards with live demo and repository links |
+| **Certificates** | Verified credentials with issuer, date, and a link to each certificate |
+| **Contact** | EmailJS form, LinkedIn, and GitHub |
 
 ---
 
 ## Tech Stack
 
-| Technology                                     | Purpose                                            |
-| ---------------------------------------------- | -------------------------------------------------- |
-| HTML5                                          | Structure and semantic markup                      |
-| CSS3                                           | Styling, custom properties, grid & flexbox layout  |
-| JavaScript (ES6+)                              | Interactivity, DOM manipulation, project rendering |
-| [ScrollReveal.js](https://scrollrevealjs.org/) | Scroll-triggered entrance animations               |
-| [EmailJS](https://www.emailjs.com/)            | Client-side email sending (no backend)             |
-| [RemixIcons](https://remixicon.com/)           | Icon library via CDN                               |
+| Technology | Purpose |
+| --- | --- |
+| HTML5 | Semantic structure |
+| CSS3 | Custom properties, Grid, Flexbox, media queries |
+| JavaScript (ES6+) | Rendering from data, menu, scroll-spy, form handling |
+| [EmailJS](https://www.emailjs.com/) | Client-side email sending, loaded from jsDelivr |
+| [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Typeface, loaded from Google Fonts |
+
+Icons are inline SVGs styled by a single rule in the stylesheet, so there is no icon library to load.
 
 ---
 
 ## Project Structure
 
 ```
-jasseramir.github.io/
+.
 ├── index.html
 ├── favicon.ico
-├── assets/
-│   ├── css/
-│   │   └── styles.css
-│   ├── js/
-│   │   ├── data/
-│   │   │   ├── projects.js
-│   │   │   └── certificates.js
-│   │   └── main/
-│   │       ├── main.js
-│   │       └── scrollreveal.min.js
-│   ├── img/
-│   │   ├── main/
-│   │   │   ├── home-perfil.webp
-│   │   │   └── about-perfil.webp
-│   │   ├── projects/
-│   │   │   ├── snake.webp
-│   │   │   ├── burger.webp
-│   │   │   └── equationjs.webp
-│   │   ├── design/
-│   │   │   ├── curved-arrow.svg
-│   │   │   └── random-lines.svg
-│   │   └── logos/
-│   │       ├── favicon-16x16.png
-│   │       ├── favicon-32x32.png
-│   │       ├── apple-touch-icon.png
-│   │       └── preview.png
-│   └── docs/
-│       └── jasser_amir_resume.pdf
+├── README.md
+├── DESIGN.md
+├── .prettierrc
+└── assets/
+    ├── css/
+    │   └── styles.css            # Tokens, layout, components, responsive rules
+    ├── js/
+    │   ├── data/
+    │   │   ├── projects.js       # Project cards data
+    │   │   └── certificates.js   # Certificate cards data
+    │   └── main/
+    │       └── main.js           # Menu, scroll-spy, rendering, contact form
+    ├── img/
+    │   └── logos/                # Favicons, Apple touch icon, social preview
+    └── docs/
+        └── jasser_amir_resume.pdf
 ```
+
+Script order matters. `index.html` loads EmailJS, then `projects.js`, then `certificates.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals.
 
 ---
 
 ## Getting Started
-
-No build tools or dependencies to install. Just clone and open.
 
 ```bash
 git clone https://github.com/jasseramir/jasseramir.github.io.git
 cd jasseramir.github.io
 ```
 
-Then open `index.html` in your browser, or serve it locally:
+Open `index.html` directly, or serve it locally:
 
 ```bash
-# Using VS Code
-# Install the "Live Server" extension, then right-click index.html → Open with Live Server
-
-# Using Python
 python -m http.server 3000
+# then visit http://localhost:3000
 ```
+
+The VS Code **Live Server** extension also works.
 
 ---
 
-## Adding a New Project
+## Adding a Project
 
-Open `assets/js/data/projects.js` and add a new object to the `projects` array:
+Edit `assets/js/data/projects.js` and add an object to the `projects` array:
 
 ```js
 {
-  projectImgSrc: 'Image file name',          // place image in assets/img/projects/
-  projectImgAlt: 'Description of image',
-  projectLink: 'https://your-live-site.com',
-  projectType: 'Website',
+  projectLink: 'https://example.com/',     // live demo URL, or null if there is none
+  projectType: 'Website',                  // short label shown as a pill
   projectTitle: 'Project Name',
-  projectDescription: 'Short description of the project.',
-  projectGithubSrc: 'https://github.com/username/your-repo',
+  projectDescription: 'One or two sentences about the project.',
+  projectGithubSrc: 'https://github.com/username/repo',
 }
 ```
 
-The card will render automatically — no HTML changes needed.
+- With a `projectLink`, the card shows **Live Demo** and **View Repository** buttons.
+- With `projectLink: null`, the card shows a single **View Repository** button.
+- Card colors rotate automatically (white, sky, lavender), and the **Projects Built** counter updates on its own.
 
----
+## Adding a Certificate
 
-## Adding a New Certificate
-
-Open `assets/js/data/certificates.js` and add a new object to the `certificates` array:
+Edit `assets/js/data/certificates.js` and add an object to the `certificates` array:
 
 ```js
 {
-  organization: 'Your certificate issuer',
-  certificateTitle: 'Your Certificate Title',
+  organization: 'Issuer name',
+  certificateTitle: 'Certificate Title',
   dateDay: '1',
-  dateMonth: 'Jan',    // write month in letters
+  dateMonth: 'Jan',                        // month as a short word, not a number
   dateYear: '2026',
-  certificateLink: 'https://link-to-your-certificate.com',
+  certificateLink: 'https://link-to-certificate.com',
 }
 ```
 
-The card will render automatically — no HTML changes needed.
+The **Certificates Earned** counter and the "issued by" line in the section header are derived from this array.
 
 ---
 
-## Contact
+## Contact Form Setup
 
-- **Email:** via the contact form on the live site
-- **LinkedIn:** [linkedin.com/in/jasser-amir-37428a3b1](https://www.linkedin.com/in/jasser-amir-37428a3b1)
-- **GitHub:** [github.com/jasseramir](https://github.com/jasseramir)
+The form uses [EmailJS](https://www.emailjs.com/) and needs no backend.
+
+1. Create an EmailJS service and an email template.
+2. In the template, use these variables, which match the form field names: `user_name`, `user_email`, `user_subject`, `user_message`.
+3. Put your service ID, template ID, and public key in the `emailjs.sendForm(...)` call in `assets/js/main/main.js`.
+
+An EmailJS public key is designed to be exposed in client-side code. To limit abuse, restrict the allowed domains and set a rate limit in the EmailJS dashboard.
+
+---
+
+## Code Style
+
+Formatting is handled by Prettier with the settings in `.prettierrc` (semicolons, single quotes, 2-space indent).
 
 ---
 
@@ -199,4 +156,8 @@ This project is not licensed for reuse or redistribution.
 
 ---
 
-Made by [Jasser Amir](https://jasseramir.github.io)
+## Contact
+
+- **LinkedIn:** [linkedin.com/in/jasser-amir-37428a3b1](https://www.linkedin.com/in/jasser-amir-37428a3b1)
+- **GitHub:** [github.com/jasseramir](https://github.com/jasseramir)
+- **Email:** through the contact form on the [live site](https://jasseramir.github.io/#contact)

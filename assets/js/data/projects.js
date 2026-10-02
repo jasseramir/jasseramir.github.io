@@ -1,8 +1,6 @@
 /*=============== PROJECTS ===============*/
 const projects = [
   {
-    projectImgSrc: 'burger.webp',
-    projectImgAlt: 'Screenshot of a tablet with a burger website open',
     projectLink: 'https://jasseramir.github.io/burger-website/',
     projectType: 'Website',
     projectTitle: 'Burger Website',
@@ -12,8 +10,6 @@ const projects = [
   },
 
   {
-    projectImgSrc: 'snake.webp',
-    projectImgAlt: 'Screenshot of the Snake game interface',
     projectLink: 'https://jasseramir.github.io/snake/',
     projectType: 'Game',
     projectTitle: 'Snake',
@@ -23,13 +19,11 @@ const projects = [
   },
 
   {
-    projectImgSrc: 'equationjs.webp',
-    projectImgAlt: 'Screenshot of a calculator solving linear equation',
-    projectLink: null,
+    projectLink: 'https://equationx-psi.vercel.app',
     projectType: 'Library',
-    projectTitle: 'EquationJS',
+    projectTitle: 'EquationX',
     projectDescription:
-      'A modern library solves several types of equations, built with Vanilla JavaScript, featuring a custom parser to make computer understand equations before solving it.',
-    projectGithubSrc: 'https://github.com/jasseramir/equationjs',
+      'A modern library solves several types of equations, built with Python and soft UI, featuring a custom parser to make computer understand equations before solving it.',
+    projectGithubSrc: 'https://github.com/jasseramir/equationx',
   },
 ];
