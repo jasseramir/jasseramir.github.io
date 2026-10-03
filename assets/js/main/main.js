@@ -63,6 +63,52 @@ const spy = new IntersectionObserver(
 );
 document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
 
+/*=============== CUSTOM CURSOR ===============*/
+// A paper plane that follows the mouse: lavender over anything clickable, with
+// a spinner badge over a disabled button, and an I-beam over text fields.
+// Only for a fine, hovering pointer; touch screens keep it native.
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const TILT = 16;
+  const PLANE = 'M7 6L25.5 14L17.5 18L12.5 25.5Z';
+  const CLICKABLE =
+    'a, button:not(:disabled), [role="button"], label[for], summary';
+  const plane = (cls, extra = '') =>
+    `<svg class="${cls}" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(${TILT} 7 6)"><path class="o" d="${PLANE}"/><path class="b" d="${PLANE}"/></g>${extra}</svg>`;
+  // wait: the same plane with a small cobalt spinner badge at its corner
+  const BADGE =
+    '<circle class="bg" cx="25" cy="27" r="6.5"/><g class="sp"><circle class="tr" cx="25" cy="27" r="3.8"/><path class="ar" d="M28.8 27a3.8 3.8 0 00-3.8-3.8"/></g>';
+  // text: an I-beam (white outline path first, navy path on top)
+  const IBEAM = 'M12 6.5h8M16 6.5v19M12 25.5h8';
+  const ibeam = `<svg class="t" viewBox="0 0 32 32" aria-hidden="true"><path class="o" d="${IBEAM}"/><path class="b" d="${IBEAM}"/></svg>`;
+
+  const cursor = document.createElement('div');
+  cursor.className = 'cur';
+  cursor.innerHTML = plane('d') + plane('p') + plane('w', BADGE) + ibeam;
+  document.body.appendChild(cursor);
+  document.documentElement.classList.add('custom-cursor');
+
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      if (e.pointerType === 'touch') return;
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      cursor.classList.add('on');
+      const wait = !!e.target.closest?.('button:disabled');
+      const txt = !wait && !!e.target.closest?.('input, textarea');
+      cursor.classList.toggle('wait', wait);
+      cursor.classList.toggle('txt', txt);
+      cursor.classList.toggle(
+        'ptr',
+        !wait && !txt && !!e.target.closest?.(CLICKABLE),
+      );
+    },
+    { passive: true },
+  );
+  document.documentElement.addEventListener('mouseleave', () =>
+    cursor.classList.remove('on'),
+  );
+}
+
 /*=============== PROJECTS ===============*/
 const projectsContainer = $('projects-container');
 const tones = ['c-white', 'c-sky', 'c-lav'];
@@ -113,9 +159,19 @@ const contactBtn = $('contact-button');
 const honeypotInput = $('website');
 let sendTimeId = null;
 
-function setStatus(text) {
-  contactMessage.textContent = text;
-  contactMessage.style.display = 'block';
+// Same outline style as the rest of the icons (24 viewBox, styled in CSS).
+const STATUS_ICONS = {
+  loading:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M21 12a9 9 0 00-9-9"/></svg>',
+  ok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>',
+  error:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg>',
+};
+
+function setStatus(text, state) {
+  contactMessage.dataset.state = state;
+  contactMessage.innerHTML = `${STATUS_ICONS[state]}<span>${esc(text)}</span>`;
+  contactMessage.style.display = 'flex';
 }
 
 async function sendEmail() {
@@ -123,10 +179,10 @@ async function sendEmail() {
 
   try {
     contactBtn.disabled = true;
-    setStatus('Sending...');
+    setStatus('Sending...', 'loading');
 
     if (honeypotInput.value !== '') {
-      setStatus('Sent successfully');
+      setStatus('Sent successfully', 'ok');
       contactForm.reset();
       return;
     }
@@ -138,14 +194,14 @@ async function sendEmail() {
       '8-3MlNU4tu0G6NJrt',
     );
 
-    setStatus('Sent successfully');
+    setStatus('Sent successfully', 'ok');
     contactForm.reset();
   } catch (err) {
     console.log(
       'Error: ' +
         (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
     );
-    setStatus('Failed to send. Please try again.');
+    setStatus('Failed to send. Please try again.', 'error');
   } finally {
     contactBtn.disabled = false;
     sendTimeId = setTimeout(() => {

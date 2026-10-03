@@ -137,7 +137,7 @@ Icons are inline SVGs on a 24×24 viewBox, outline style. One global rule sets `
 
 Inputs and the textarea use the `--soft` fill, 14px radius, no border, and no resize. Labels are uppercase 11px. Focus shows a 2px lavender outline. The honeypot field is positioned off-screen (`.hp`) and hidden from assistive tech with `aria-hidden`.
 
-Form status text appears next to the send button and hides itself after 3.5 seconds.
+Form status text appears next to the send button and hides itself after 3.5 seconds. It carries a 22px outline icon (set in `main.js`, styled in CSS): a cobalt spinner while sending, a navy check on a lavender circle on success, and a white cross on a navy circle on failure. The spinner stops turning under `prefers-reduced-motion`.
 
 ## Motion
 
@@ -148,6 +148,7 @@ Motion is minimal and purely functional.
 - Short color transitions on links and buttons (0.15s to 0.5s).
 - Hover and press: buttons (`.btn`), nav links, the logo, footer links, and the burger grow to `scale(1.05)` on hover and shrink to `scale(.95)` while pressed. Service, project, and certificate cards lift with `translateY(-6px)` on hover (no shadow, to stay flat). Hover rules sit inside `@media (hover: hover)` so taps on phones don't leave a stuck state. Disabled buttons don't react. After each ScrollReveal finishes, `main.js` clears its inline `transform` and `transition` so these CSS transforms work.
 - Drawer slide of 0.35s.
+- Cursor: on devices with a fine, hovering pointer, the native cursor is replaced by a navy paper plane (tilted 16°, white outline) built in `main.js`. Over links and buttons it fades to a lavender plane with a navy outline in 150ms. Over a disabled button (the send button while sending) it shows the navy plane with a small cobalt spinner badge, the same spinner as the sending icon. Over text fields it becomes a navy I-beam with a white outline. Touch screens keep the native cursor, and the colors come from the `--navy`, `--lav`, `--cobalt` and `--line` tokens.
 
 Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are turned off, and scroll reveal is not initialized.
 

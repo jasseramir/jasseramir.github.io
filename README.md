@@ -15,6 +15,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 - **Flat, token-based design system.** Pastel palette, no shadows, one typeface. See [DESIGN.md](DESIGN.md).
 - **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px (tap anywhere or swipe up to close).
 - **Accessible by default.** Semantic landmarks, labelled navigation, `aria-expanded` on the menu button, `aria-live` form status, visible focus rings, and `prefers-reduced-motion` support.
+- **Custom cursor.** On desktop, a paper-plane cursor that fades to lavender over links and buttons, shows a spinner badge over a disabled button, and turns into an I-beam over text fields. Touch screens keep the native cursor.
 - **Scroll reveal animations.** Every block rises from the bottom in 300ms as it scrolls into view, with cards, tiles, and certificates staggered 80ms apart. Powered by ScrollReveal and disabled under `prefers-reduced-motion`.
 - **Scroll-spy navigation.** The active link follows the section in view using `IntersectionObserver`.
 - **Contact form with spam protection.** EmailJS delivery plus a hidden honeypot field.
@@ -69,7 +70,7 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
     │   │   └── certificates.js   # Certificate cards data
     │   └── main/
     │       ├── scrollreveal.min.js  # ScrollReveal library
-    │       └── main.js           # Menu, scroll-spy, rendering, reveal animations, contact form
+    │       └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, contact form
     ├── img/
     │   └── logos/                # Favicons, Apple touch icon, social preview
     └── docs/

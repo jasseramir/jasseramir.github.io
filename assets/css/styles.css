@@ -8,6 +8,8 @@
   --soft: #EFEDF1;
   --line: #E5E7EB;
   --ink: #111827;
+  --err: #E5484D;
+  --dis: #E3E5EA;
   --g3: #D1D5DB;
   --g6: #4B5563;
   --g7: #374151;
@@ -186,11 +188,6 @@ svg {
   transition: color .5s, transform .2s ease;
 }
 
-.nav a:hover {
-  color: var(--cobalt);
-  transition-duration: .15s;
-}
-
 .nav a.on {
   color: var(--cobalt);
 }
@@ -298,33 +295,17 @@ svg {
   background: var(--lav);
 }
 
-.lav:is(a,button):hover {
-  background: var(--lav-h);
-}
-
 .white {
   background: #fff;
-}
-
-.white:is(a,button):hover {
-  background: #f3f4f6;
 }
 
 .soft {
   background: var(--soft);
 }
 
-.soft:is(a,button):hover {
-  background: #e5e7eb;
-}
-
 .navy {
   background: var(--navy);
   color: #fff;
-}
-
-.navy:is(a,button):hover {
-  background: #000;
 }
 
 .card {
@@ -935,10 +916,6 @@ svg {
   color: #fff;
 }
 
-.ghost:hover {
-  background: rgba(255, 255, 255, .2);
-}
-
 .formcard {
   background: #fff;
   border: 1px solid var(--line);
@@ -1009,7 +986,8 @@ textarea:focus {
 }
 
 .send:disabled {
-  opacity: .6;
+  background: var(--soft);
+  color: var(--g6);
   cursor: wait;
 }
 
@@ -1018,6 +996,44 @@ textarea:focus {
   font-weight: 700;
   margin-left: 0.5rem;
   display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+/* status icons: a cobalt spinner while sending, then a lavender check badge
+   on success or a navy cross badge on failure */
+
+#contact-message svg {
+  width: 22px;
+  height: 22px;
+}
+
+#contact-message[data-state="loading"] svg {
+  color: var(--cobalt);
+  animation: spin .8s linear infinite;
+}
+
+#contact-message[data-state="ok"] svg,
+#contact-message[data-state="error"] svg {
+  padding: 4px;
+  border-radius: 50%;
+  stroke-width: 3;
+}
+
+#contact-message[data-state="ok"] svg {
+  background: var(--lav);
+  color: var(--navy);
+}
+
+#contact-message[data-state="error"] svg {
+  background: color-mix(in srgb, var(--err) 15%, transparent);
+  color: var(--err);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* footer */
@@ -1053,10 +1069,6 @@ footer ul {
   gap: 16px;
   justify-content: center;
   color: var(--g6);
-}
-
-footer a:hover {
-  color: var(--ink);
 }
 
 footer li a {
@@ -1267,6 +1279,11 @@ footer li a {
   * {
     transition: none !important;
   }
+
+  #contact-message svg,
+  .cur.wait .sp {
+    animation: none;
+  }
 }
 
 /* hero responsive */
@@ -1372,15 +1389,23 @@ footer li a {
 }
 
 
-/* interaction: hover and press
+/* interaction: hover, press and cursor
    - buttons and links grow slightly on hover, shrink when pressed
    - service, project and certificate cards lift on hover
-   - hover only on devices that really hover, so taps on phones don't stick */
+   - hover only on devices that really hover, so taps on phones don't stick
+   - on those devices the cursor is a paper plane that fades to lavender over
+     anything clickable (see "custom cursor" below) */
 
 @media (hover: hover) {
   :is(.btn:not(:disabled), .logo, .nav a, .drawer a.l, footer li a, .burger):hover {
     transform: scale(1.05);
   }
+  
+  /* button hover colors (never on a disabled button) */
+  .lav:is(a, button):not(:disabled):hover   { background: var(--lav-h); }
+  .white:is(a, button):not(:disabled):hover { background: #f3f4f6; }
+  .soft:is(a, button):not(:disabled):hover  { background: #e5e7eb; }
+  .navy:is(a, button):not(:disabled):hover  { background: #000; }
 
   .svc:hover,
   .proj:hover,
@@ -1392,4 +1417,133 @@ footer li a {
 /* must stay after the hover rules so a press wins while hovering */
 :is(.btn:not(:disabled), .logo, .nav a, .drawer a.l, footer li a, .burger):active {
   transform: scale(.95);
+}
+
+/* custom cursor
+   - main.js adds .custom-cursor to <html> and creates .cur, but only for a
+     fine, hovering pointer, so touch screens and no-JS visits keep the
+     native cursor (and the cursor: pointer rules on a and button above)
+   - four layers crossfade in .15s (the global reduced-motion rule turns that
+     off): .d the navy plane, .p the lavender plane over anything clickable,
+     .w the navy plane with a cobalt spinner badge over a disabled button,
+     and .t a navy I-beam over text fields
+   - the planes' tip sits at the pointer; the I-beam is centered on it */
+
+:root.custom-cursor,
+:root.custom-cursor * {
+  cursor: none;
+}
+
+.cur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  will-change: transform;
+}
+
+.cur.on {
+  opacity: 1;
+}
+
+.cur svg {
+  position: absolute;
+  left: -6px;
+  top: -5px;
+  width: 32px;
+  height: 32px;
+  overflow: visible;
+  transition: opacity .15s ease;
+}
+
+.cur .o {
+  stroke-width: 7;
+}
+
+.cur .b {
+  stroke-width: 3;
+}
+
+.cur :is(.d, .w) .o {
+  fill: #fff;
+  stroke: #fff;
+}
+
+.cur :is(.d, .w) .b {
+  fill: var(--navy);
+  stroke: var(--navy);
+}
+
+.cur .p .o {
+  fill: var(--navy);
+  stroke: var(--navy);
+}
+
+.cur .p .b {
+  fill: var(--lav);
+  stroke: var(--lav);
+}
+
+.cur .p,
+.cur .w,
+.cur .t {
+  opacity: 0;
+}
+
+.cur.ptr .d,
+.cur.wait .d,
+.cur.txt .d {
+  opacity: 0;
+}
+
+.cur.ptr .p,
+.cur.wait .w,
+.cur.txt .t {
+  opacity: 1;
+}
+
+/* wait: spinner badge, same look as the sending icon (spins only while shown) */
+
+.cur .bg {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.cur .tr,
+.cur .ar {
+  fill: none;
+  stroke: var(--cobalt);
+  stroke-width: 2;
+}
+
+.cur .tr {
+  opacity: .25;
+}
+
+.cur.wait .sp {
+  transform-origin: 25px 27px;
+  animation: spin .8s linear infinite;
+}
+
+/* text: I-beam, white outline under a navy stroke */
+
+.cur .t {
+  left: -16px;
+  top: -16px;
+}
+
+.cur .t .o {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 5.5;
+}
+
+.cur .t .b {
+  fill: none;
+  stroke: var(--navy);
+  stroke-width: 2.2;
 }
