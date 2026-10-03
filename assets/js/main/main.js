@@ -96,9 +96,6 @@ $('stat-projects').textContent = projects.length;
 $('stat-certs').textContent = certificates.length;
 
 /*=============== CERTIFICATES ===============*/
-const orgs = [...new Set(certificates.map((c) => c.organization))].join(', ');
-$('certs-issuer').textContent =
-  `Official developer certifications issued by ${orgs}`;
 $('certificates-container').innerHTML = certificates.map((c) => `
   <div class="cert">
     <div class="cert-data">
@@ -180,6 +177,12 @@ if (
     viewOffset: { bottom: 40 },
     cleanup: true,
     once: true,
+    // ScrollReveal leaves an inline transform + 1.5s transition behind, which
+    // would beat the CSS hover/press transforms, so clear them once revealed.
+    afterReveal: (el) => {
+      el.style.removeProperty('transform');
+      el.style.removeProperty('transition');
+    },
   });
 
   // Reveals every match of `selector` on its own. Elements that sit in the

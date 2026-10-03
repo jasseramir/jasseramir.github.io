@@ -146,6 +146,7 @@ Motion is minimal and purely functional.
 - Scroll reveal: every block rises 24px from the bottom while fading in, over 300ms, once, as it enters the viewport. The header is never animated. Each piece of the hero, each section title, and each card, tile, and certificate reveals on its own. Items in the same row are staggered 80ms apart. Powered by ScrollReveal, configured at the bottom of `main.js`.
 - Smooth scrolling for anchor navigation.
 - Short color transitions on links and buttons (0.15s to 0.5s).
+- Hover and press: buttons (`.btn`), nav links, the logo, footer links, and the burger grow to `scale(1.05)` on hover and shrink to `scale(.95)` while pressed. Service, project, and certificate cards lift with `translateY(-6px)` on hover (no shadow, to stay flat). Hover rules sit inside `@media (hover: hover)` so taps on phones don't leave a stuck state. Disabled buttons don't react. After each ScrollReveal finishes, `main.js` clears its inline `transform` and `transition` so these CSS transforms work.
 - Drawer slide of 0.35s.
 
 Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are turned off, and scroll reveal is not initialized.
