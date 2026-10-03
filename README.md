@@ -1,6 +1,6 @@
 # Jasser Amir — Portfolio
 
-![Jasser Amir — Front-End Web Developer](assets/img/logos/preview.png)
+![Jasser Amir — Front-End Web Developer](assets/img/screenshots/screenshot1.png)
 
 A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No framework, no build step, no dependencies to install. Projects and certificates are rendered from small data files, and the contact form sends real email through EmailJS.
 
