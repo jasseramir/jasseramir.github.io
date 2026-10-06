@@ -9,7 +9,7 @@
   --line: #E5E7EB;
   --ink: #111827;
   --err: #E5484D;
-  --dis: #E3E5EA;
+  --mint: #A6EBC9;
   --g3: #D1D5DB;
   --g6: #4B5563;
   --g7: #374151;
@@ -43,7 +43,7 @@ body {
 }
 
 ::selection {
-  background: var(--lav);
+  background: var(--mint);
   color: var(--navy);
 }
 
