@@ -255,9 +255,12 @@ if (
     });
   }
 
+  // delay for code card in main section for various devices
+  const heroSideBase = matchMedia('(min-width: 1024px)').matches ? 150 : 800;
+
   // home: each piece on its own
   reveal('.hero-card > *', { base: 50, inOrder: true });
-  reveal('.hero-side > *', { base: 150, inOrder: true });
+  reveal('.hero-side > *', { base: heroSideBase, inOrder: true });
 
   // section titles
   reveal('.title');
