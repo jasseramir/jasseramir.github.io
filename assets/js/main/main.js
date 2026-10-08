@@ -241,21 +241,32 @@ if (
     },
   });
 
+  // True when the element is already on screen at page load (mirrors the
+  // viewFactor / viewOffset used above).
+  const visibleAtLoad = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.top < innerHeight - 40 - r.height * 0.1 && r.bottom > 0;
+  };
+  
   // Reveals every match of `selector` on its own. Elements that sit in the
-  // same row (cards, tiles, certificates) enter one after another, `step` ms
-  // apart; with `inOrder`, the whole group is staggered by position instead.
+  // same row (cards, tiles, certificates) enter one after another, `STEP` ms apart.
   const STEP = 200;
   function reveal(selector, { base = 0, inOrder = false } = {}) {
     const els = [...document.querySelectorAll(selector)];
+    let shown = 0;
     els.forEach((el, i) => {
-      const n = inOrder
-        ? i
-        : els.slice(0, i).filter((p) => p.offsetTop === el.offsetTop).length;
-      sr.reveal(el, { delay: base + n * STEP });
+      const sameRow = els.slice(0, i).filter((p) => p.offsetTop === el.offsetTop).length;
+      let delay = sameRow * STEP; // default
+      
+      if (!inOrder) delay = base + sameRow * STEP;
+      else if (visibleAtLoad(el)) delay = base + shown++ * STEP;
+
+      sr.reveal(el, { delay });
     });
   }
 
-  // delay for code card in main section for various devices
+  // delay for the code card in the main section: on desktop it sits beside
+  // the hero card, on narrow screens it waits for the hero card's own pieces
   const heroSideBase = matchMedia('(min-width: 1024px)').matches ? 150 : 800;
 
   // home: each piece on its own
@@ -272,3 +283,4 @@ if (
   reveal('.certs-head');
   reveal('.cert');
 }
+
