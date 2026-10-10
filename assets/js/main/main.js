@@ -87,27 +87,324 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   document.body.appendChild(cursor);
   document.documentElement.classList.add('custom-cursor');
 
+  let lastX = 0;
+  let lastY = 0;
+  let lastTouch = false;
+
+  // Picks which cursor layer shows for the element under the pointer.
+  // While the Easter egg terminal is typing, the whole skills card shows the
+  // wait cursor (Contact Me included); afterwards it goes back to normal.
+  function paint(target) {
+    const typing =
+      document.documentElement.classList.contains('egg-typing') &&
+      !!target?.closest?.('#skills');
+    const wait = typing || !!target?.closest?.('button:disabled');
+    const txt = !wait && !!target?.closest?.('input, textarea');
+    cursor.classList.toggle('wait', wait);
+    cursor.classList.toggle('txt', txt);
+    cursor.classList.toggle(
+      'ptr',
+      !wait && !txt && !!target?.closest?.(CLICKABLE),
+    );
+  }
+
   document.addEventListener(
     'pointermove',
     (e) => {
-      if (e.pointerType === 'touch') return;
+      lastTouch = e.pointerType === 'touch';
+      if (lastTouch) return;
+      lastX = e.clientX;
+      lastY = e.clientY;
       cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
       cursor.classList.add('on');
-      const wait = !!e.target.closest?.('button:disabled');
-      const txt = !wait && !!e.target.closest?.('input, textarea');
-      cursor.classList.toggle('wait', wait);
-      cursor.classList.toggle('txt', txt);
-      cursor.classList.toggle(
-        'ptr',
-        !wait && !txt && !!e.target.closest?.(CLICKABLE),
-      );
+      paint(e.target);
     },
     { passive: true },
   );
+  // typing started or stopped while the mouse was standing still
+  document.addEventListener('eggtyping', () => {
+    if (lastTouch || !cursor.classList.contains('on')) return;
+    paint(document.elementFromPoint(lastX, lastY));
+  });
   document.documentElement.addEventListener('mouseleave', () =>
     cursor.classList.remove('on'),
   );
 }
+
+/*=============== SKILLS EASTER EGG ===============*/
+// Hold every skill chip until it fills. When all nine are full, the card turns
+// into a build terminal. The chips and the terminal share one grid cell, so the
+// card never changes size, and the progress track and Contact Me button stay.
+// The restart button next to "Core Stack" appears once the terminal has
+// finished typing and puts the card back exactly as it was.
+(() => {
+  // ---- EDIT THE WORDS HERE ----------------------------------------------
+  // The terminal reserves room for five lines (`min-height: 8.5em` on `.term`
+  // in styles.css). Keep it to five, or raise that value to match.
+  const COPY = {
+    title: 'Build Passed', // replaces "My Skills Are:" once unlocked
+    command: 'npm run build', // first line, shown after a "$"
+    compiling: (name) => `compiling ${name}...`, // flashes once per chip
+    compiled: (count) => `${count}/${count} skills compiled`, // gets the check
+    result: '0 errors, 0 warnings', // gets the check too
+    secret: 'YOU FOUND THE EASTER EGG!', // "//" is added in front automatically
+    closing: "NEXT STEP: BUILD IT TOGETHER", // same
+  };
+  // ------------------------------------------------------------------------
+
+  const card = $('skills');
+  const chips = [...card.querySelectorAll('.chips button')];
+  const term = $('skills-term');
+  const title = $('skills-title');
+  const bar = $('skills-bar');
+  const restart = $('skills-restart');
+  const HOLD = 650; // ms to fill one chip
+  const DRAIN = HOLD / 3; // ms to empty a chip released early
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // same check as the form's success icon
+  const CHECK =
+    '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 13l4 4L19 7"/></svg>';
+
+  const names = chips.map((c) => c.textContent.trim());
+  const originalTitle = title.textContent;
+  const progress = chips.map(() => 0);
+  const held = chips.map(() => false);
+  const done = chips.map(() => false);
+  let unlocked = false;
+  let running = false;
+  let last = 0;
+  let run = 0; // bumped on restart so a half-typed terminal stops itself
+  let unlockTimer = 0;
+
+  const fills = chips.map((chip, i) => {
+    const fill = document.createElement('i');
+    fill.className = 'fill';
+    const label = document.createElement('span');
+    label.textContent = names[i];
+    chip.textContent = '';
+    chip.append(fill, label);
+    return fill;
+  });
+
+  function press(i, on) {
+    if (unlocked || done[i]) return;
+    held[i] = on;
+    chips[i].classList.toggle('held', on);
+    card.classList.toggle('holding', held.some(Boolean));
+    if (on) start();
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    last = performance.now();
+    requestAnimationFrame(tick);
+  }
+
+  function tick(now) {
+    const dt = now - last;
+    last = now;
+    let busy = false;
+    chips.forEach((chip, i) => {
+      if (done[i]) return;
+      if (held[i]) {
+        progress[i] = Math.min(1, progress[i] + dt / HOLD);
+        busy = true;
+      } else if (progress[i] > 0) {
+        progress[i] = Math.max(0, progress[i] - dt / DRAIN);
+        busy = true;
+      }
+      fills[i].style.height = `${progress[i] * 100}%`;
+      chip.classList.toggle('lit', progress[i] > 0.55);
+      if (progress[i] >= 1) complete(i);
+    });
+    paintBar();
+    if (busy && !unlocked) requestAnimationFrame(tick);
+    else running = false;
+  }
+
+  // Strain, then break free. For the first half of the hold the bar creeps
+  // forward with effort (slow, building tension, no stalls) and only gets to
+  // 50%; then it breaks free and reveals smoothly to the end. The reveal starts
+  // at exactly the speed the strain ended with, so nothing pauses in between.
+  // Exactly 0 at 0 and exactly 1 at 1, so the bar lands precisely on count/total.
+  const STRAIN_SHARE = 0.5; // part of the hold spent straining
+  const STRAIN_REACH = 0.5; // how far the bar gets before it breaks free
+  function struggle(p) {
+    if (p <= 0) return 0;
+    if (p >= 1) return 1;
+    const Q = STRAIN_SHARE;
+    const A = STRAIN_REACH;
+    if (p < Q) {
+      const u = p / Q;
+      return A * u * u;
+    }
+    const m0 = (2 * A * (1 - Q)) / (Q * (1 - A)); // match the strain's end speed
+    const r = (p - Q) / (1 - Q);
+    const r2 = r * r;
+    const r3 = r2 * r;
+    const h = (r3 - 2 * r2 + r) * m0 + (-2 * r3 + 3 * r2);
+    return A + (1 - A) * h;
+  }
+
+  // The track follows the live fill of every chip (finished chips count as 1),
+  // so it grows while holding and lands exactly on count/total.
+  function paintBar() {
+    const total = progress.reduce((a, b) => a + struggle(b), 0);
+    bar.style.width = `${(total / chips.length) * 100}%`;
+    card.classList.toggle('holding', held.some(Boolean));
+  }
+
+  function complete(i) {
+    done[i] = true;
+    held[i] = false;
+    chips[i].classList.remove('held');
+    chips[i].classList.add('done');
+    navigator.vibrate?.(15);
+    const count = done.filter(Boolean).length;
+    paintBar();
+    // brief pulse as the bar locks onto its new point
+    bar.classList.remove('lock');
+    void bar.offsetWidth;
+    bar.classList.add('lock');
+    if (count === chips.length) {
+      unlocked = true;
+      unlockTimer = setTimeout(unlock, reduceMotion ? 0 : 500);
+    }
+  }
+
+  const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? 0 : ms));
+
+  // Adds a terminal line. Every line has a two-character gutter on the left
+  // ("$", ">", "//" or an icon) so all the text starts in the same column.
+  function line(cls = '', text = '', mark = '') {
+    const row = document.createElement('div');
+    const gutter = document.createElement('span');
+    gutter.className = `g ${cls}`;
+    if (mark.startsWith('<svg')) gutter.innerHTML = mark;
+    else gutter.textContent = mark;
+    const body = document.createElement('span');
+    const out = document.createElement('span');
+    out.className = cls;
+    out.textContent = text;
+    term.querySelector('.caret')?.remove();
+    const caret = document.createElement('span');
+    caret.className = 'caret';
+    body.append(out, caret);
+    row.append(gutter, body);
+    term.appendChild(row);
+    return { out, gutter };
+  }
+
+  // Types text into a line one character at a time, like an old console.
+  async function type(out, text, ms, live) {
+    if (reduceMotion) {
+      out.textContent = text;
+      return;
+    }
+    for (let n = 1; n <= text.length; n++) {
+      if (!live()) return;
+      out.textContent = text.slice(0, n);
+      await wait(ms);
+    }
+  }
+
+  // tells the custom cursor (above) to show wait over the card while typing
+  function setTyping(on) {
+    document.documentElement.classList.toggle('egg-typing', on);
+    document.dispatchEvent(new Event('eggtyping'));
+  }
+
+  async function unlock() {
+    const id = run;
+    const live = () => id === run;
+    setTyping(true);
+    card.classList.add('unlocked');
+    title.textContent = COPY.title;
+    term.textContent = '';
+    const cmd = line('d', '', '$');
+    await wait(500);
+    await type(cmd.out, COPY.command, 85, live);
+    await wait(750);
+    if (!live()) return;
+    const status = line('w', '', '>');
+    for (const name of names) {
+      if (!live()) return;
+      status.out.textContent = COPY.compiling(name);
+      await wait(330);
+    }
+    if (!live()) return;
+    status.out.className = '';
+    status.out.textContent = '';
+    await type(status.out, COPY.compiled(names.length), 130, live); // slowest line
+    if (!live()) return;
+    status.gutter.className = 'g';
+    status.gutter.innerHTML = CHECK;
+    await wait(700);
+    if (!live()) return;
+    const res = line('', '', CHECK);
+    await type(res.out, COPY.result, 70, live);
+    await wait(900);
+    if (!live()) return;
+    const sec = line('d', '', '//');
+    await type(sec.out, COPY.secret, 70, live);
+    await wait(650);
+    if (!live()) return;
+    const end = line('w', '', '//');
+    await type(end.out, COPY.closing, 70, live);
+    if (!live()) return;
+    setTyping(false);
+    card.classList.add('ready'); // shows the restart button
+  }
+
+  // Puts the card back exactly as it was: chips empty, track empty, title and
+  // terminal reset, restart button hidden again.
+  function reset() {
+    run++;
+    clearTimeout(unlockTimer);
+    setTyping(false);
+    unlocked = false;
+    card.classList.remove('unlocked', 'ready');
+    title.textContent = originalTitle;
+    term.textContent = '';
+    bar.style.width = '0';
+    bar.classList.remove('lock');
+    card.classList.remove('holding');
+    chips.forEach((chip, i) => {
+      progress[i] = 0;
+      held[i] = false;
+      done[i] = false;
+      fills[i].style.height = '0';
+      chip.classList.remove('held', 'done', 'lit');
+    });
+    chips[0].focus({ preventScroll: true });
+  }
+
+  restart.addEventListener('click', reset);
+
+  chips.forEach((chip, i) => {
+    // no context menu or text selection from a long press on touch screens
+    chip.addEventListener('contextmenu', (e) => e.preventDefault());
+    chip.addEventListener('pointerdown', (e) => {
+      if (e.button) return;
+      e.preventDefault();
+      chip.setPointerCapture?.(e.pointerId);
+      press(i, true);
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach((type) =>
+      chip.addEventListener(type, () => press(i, false)),
+    );
+    chip.addEventListener('keydown', (e) => {
+      if (e.key !== ' ' && e.key !== 'Enter') return;
+      e.preventDefault();
+      press(i, true);
+    });
+    chip.addEventListener('keyup', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') press(i, false);
+    });
+    chip.addEventListener('blur', () => press(i, false));
+  });
+})();
 
 /*=============== PROJECTS ===============*/
 const projectsContainer = $('projects-container');
@@ -283,4 +580,3 @@ if (
   reveal('.certs-head');
   reveal('.cert');
 }
-

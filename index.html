@@ -205,27 +205,36 @@ developer.<span class="k">build</span>();</code></pre>
           <article class="card c-sky skills" id="skills">
             <div>
               <div class="between">
-                <span class="pill label" style="background:rgba(255,255,255,.8);color:var(--g7)">
-                  Core Stack
-                </span>
-                <span style="font-size:12px;font-weight:700;color:#1f2937">
-                  Front-End
-                </span>
+                <div class="head-left">
+                  <span class="pill label">
+                    Core Stack
+                  </span>
+                  <button class="restart" id="skills-restart" type="button" aria-label="Restart">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                  </button>
+                </div>
+                <span class="fe">Front-End</span>
               </div>
-              <h3 style="padding-left: 0.25rem;">My Skills Are:</h3>
-              <div class="chips">
-                <span>HTML5</span>
-                <span>CSS3</span>
-                <span>JavaScript (ES6+)</span>
-                <span>Python</span>
-                <span>Git &amp; GitHub</span>
-                <span class="w">Responsive Design</span>
-                <span class="w">DOM Manipulation</span>
-                <span class="w">Modular Architecture</span>
-                <span class="s">REST APIs</span>
+              <h3 id="skills-title" style="padding-left: 0.25rem;">My Skills Are:</h3>
+              <div class="stack">
+                <div class="chips">
+                  <button type="button">HTML5</button>
+                  <button type="button">CSS3</button>
+                  <button type="button">JavaScript (ES6+)</button>
+                  <button type="button">Python</button>
+                  <button type="button">Git &amp; GitHub</button>
+                  <button type="button" class="w">Responsive Design</button>
+                  <button type="button" class="w">DOM Manipulation</button>
+                  <button type="button" class="w">Modular Architecture</button>
+                  <button type="button" class="s">REST APIs</button>
+                </div>
+                <div class="term" id="skills-term" aria-live="polite"></div>
               </div>
             </div>
             <div class="foot between">
+              <div class="track" aria-hidden="true"><i id="skills-bar"></i></div>
               <span>Ready to build together?</span>
               <a class="btn navy" href="#contact">
                 Contact Me
