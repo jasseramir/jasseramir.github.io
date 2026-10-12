@@ -26,9 +26,9 @@ burger.addEventListener('click', (e) => {
   e.stopPropagation();
   setMenu(true);
 });
-// tap anywhere (links, backdrop, drawer) closes the menu
+// Tap anywhere to close
 document.addEventListener('click', () => menuOpen && setMenu(false));
-// swipe up closes the menu
+// Swipe up to close
 let touchY = null;
 document.addEventListener(
   'touchstart',
@@ -64,9 +64,9 @@ const spy = new IntersectionObserver(
 document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
 
 /*=============== CUSTOM CURSOR ===============*/
-// A paper plane that follows the mouse: lavender over anything clickable, with
-// a spinner badge over a disabled button, and an I-beam over text fields.
-// Only for a fine, hovering pointer; touch screens keep it native.
+// Paper-plane cursor (fine pointers only; touch keeps the native one).
+// Lavender over clickable items, spinner badge over disabled buttons,
+// I-beam over text fields.
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const TILT = 16;
   const PLANE = 'M7 6L25.5 14L17.5 18L12.5 25.5Z';
@@ -74,10 +74,10 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     'a, button:not(:disabled), [role="button"], label[for], summary';
   const plane = (cls, extra = '') =>
     `<svg class="${cls}" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(${TILT} 7 6)"><path class="o" d="${PLANE}"/><path class="b" d="${PLANE}"/></g>${extra}</svg>`;
-  // wait: the same plane with a small cobalt spinner badge at its corner
+  // Wait: the plane plus a small spinner badge
   const BADGE =
     '<circle class="bg" cx="25" cy="27" r="6.5"/><g class="sp"><circle class="tr" cx="25" cy="27" r="3.8"/><path class="ar" d="M28.8 27a3.8 3.8 0 00-3.8-3.8"/></g>';
-  // text: an I-beam (white outline path first, navy path on top)
+  // Text: I-beam (outline path first, navy on top)
   const IBEAM = 'M12 6.5h8M16 6.5v19M12 25.5h8';
   const ibeam = `<svg class="t" viewBox="0 0 32 32" aria-hidden="true"><path class="o" d="${IBEAM}"/><path class="b" d="${IBEAM}"/></svg>`;
 
@@ -91,9 +91,8 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   let lastY = 0;
   let lastTouch = false;
 
-  // Picks which cursor layer shows for the element under the pointer.
-  // While the Easter egg terminal is typing, the whole skills card shows the
-  // wait cursor (Contact Me included); afterwards it goes back to normal.
+  // Pick the cursor layer for the element under the pointer.
+  // While the Easter egg types, the whole skills card shows the wait cursor.
   function paint(target) {
     const typing =
       document.documentElement.classList.contains('egg-typing') &&
@@ -121,7 +120,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     },
     { passive: true },
   );
-  // typing started or stopped while the mouse was standing still
+  // Typing started/stopped while the mouse was still
   document.addEventListener('eggtyping', () => {
     if (lastTouch || !cursor.classList.contains('on')) return;
     paint(document.elementFromPoint(lastX, lastY));
@@ -132,25 +131,23 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
 }
 
 /*=============== SKILLS EASTER EGG ===============*/
-// Hold every skill chip until it fills. When all nine are full, the card turns
-// into a build terminal. The chips and the terminal share one grid cell, so the
-// card never changes size, and the progress track and Contact Me button stay.
-// The restart button next to "Core Stack" appears once the terminal has
-// finished typing and puts the card back exactly as it was.
+// Hold every skill chip until it fills. When all are full, the card turns into
+// a build terminal (chips and terminal share one grid cell, so size never
+// changes). The restart button appears once typing ends and resets the card.
 (() => {
-  // ---- EDIT THE WORDS HERE ----------------------------------------------
-  // The terminal reserves room for five lines (`min-height: 8.5em` on `.term`
-  // in styles.css). Keep it to five, or raise that value to match.
+  // ---- EDIT THE WORDS HERE ----
+  // Room for five lines (`min-height: 8.5em` on `.term` in styles.css);
+  // keep to five or raise that value.
   const COPY = {
-    title: 'Build Passed', // replaces "My Skills Are:" once unlocked
-    command: 'npm run build', // first line, shown after a "$"
-    compiling: (name) => `compiling ${name}...`, // flashes once per chip
+    title: 'Build Passed', // replaces "My Skills Are:"
+    command: 'npm run build', // first line, after "$"
+    compiling: (name) => `compiling ${name}...`, // once per chip
     compiled: (count) => `${count}/${count} skills compiled`, // gets the check
-    result: '0 errors, 0 warnings', // gets the check too
-    secret: 'YOU FOUND THE EASTER EGG!', // "//" is added in front automatically
+    result: '0 errors, 0 warnings', // gets the check
+    secret: 'YOU FOUND THE EASTER EGG!', // "//" is added automatically
     closing: "NEXT STEP: BUILD IT TOGETHER", // same
   };
-  // ------------------------------------------------------------------------
+  // -----------------------------
 
   const card = $('skills');
   const chips = [...card.querySelectorAll('.chips button')];
@@ -158,10 +155,10 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const title = $('skills-title');
   const bar = $('skills-bar');
   const restart = $('skills-restart');
-  const HOLD = 650; // ms to fill one chip
-  const DRAIN = HOLD / 3; // ms to empty a chip released early
+  const HOLD = 650; // ms to fill a chip
+  const DRAIN = HOLD / 3; // ms to empty a released chip
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // same check as the form's success icon
+  // Same as the form's success icon
   const CHECK =
     '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 13l4 4L19 7"/></svg>';
 
@@ -173,7 +170,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   let unlocked = false;
   let running = false;
   let last = 0;
-  let run = 0; // bumped on restart so a half-typed terminal stops itself
+  let run = 0; // bumped on restart to stop a half-typed terminal
   let unlockTimer = 0;
 
   const fills = chips.map((chip, i) => {
@@ -223,13 +220,10 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     else running = false;
   }
 
-  // Strain, then break free. For the first half of the hold the bar creeps
-  // forward with effort (slow, building tension, no stalls) and only gets to
-  // 50%; then it breaks free and reveals smoothly to the end. The reveal starts
-  // at exactly the speed the strain ended with, so nothing pauses in between.
-  // Exactly 0 at 0 and exactly 1 at 1, so the bar lands precisely on count/total.
-  const STRAIN_SHARE = 0.5; // part of the hold spent straining
-  const STRAIN_REACH = 0.5; // how far the bar gets before it breaks free
+  // Bar easing: strain slowly up to 50%, then break free smoothly at the same
+  // speed. Exactly 0 at 0 and 1 at 1, so the bar lands on count/total.
+  const STRAIN_SHARE = 0.5; // share of the hold spent straining
+  const STRAIN_REACH = 0.5; // bar progress before breaking free
   function struggle(p) {
     if (p <= 0) return 0;
     if (p >= 1) return 1;
@@ -247,8 +241,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     return A + (1 - A) * h;
   }
 
-  // The track follows the live fill of every chip (finished chips count as 1),
-  // so it grows while holding and lands exactly on count/total.
+  // The bar follows every chip's live fill (finished = 1).
   function paintBar() {
     const total = progress.reduce((a, b) => a + struggle(b), 0);
     bar.style.width = `${(total / chips.length) * 100}%`;
@@ -263,7 +256,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     navigator.vibrate?.(15);
     const count = done.filter(Boolean).length;
     paintBar();
-    // brief pulse as the bar locks onto its new point
+    // Pulse as the bar locks in
     bar.classList.remove('lock');
     void bar.offsetWidth;
     bar.classList.add('lock');
@@ -275,8 +268,8 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
 
   const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? 0 : ms));
 
-  // Adds a terminal line. Every line has a two-character gutter on the left
-  // ("$", ">", "//" or an icon) so all the text starts in the same column.
+  // Add a terminal line with a two-character gutter ("$", ">", "//" or icon)
+  // so all text starts in the same column.
   function line(cls = '', text = '', mark = '') {
     const row = document.createElement('div');
     const gutter = document.createElement('span');
@@ -296,7 +289,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     return { out, gutter };
   }
 
-  // Types text into a line one character at a time, like an old console.
+  // Type text one character at a time.
   async function type(out, text, ms, live) {
     if (reduceMotion) {
       out.textContent = text;
@@ -309,7 +302,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     }
   }
 
-  // tells the custom cursor (above) to show wait over the card while typing
+  // Tells the custom cursor to show wait while typing
   function setTyping(on) {
     document.documentElement.classList.toggle('egg-typing', on);
     document.dispatchEvent(new Event('eggtyping'));
@@ -354,11 +347,10 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     await type(end.out, COPY.closing, 70, live);
     if (!live()) return;
     setTyping(false);
-    card.classList.add('ready'); // shows the restart button
+    card.classList.add('ready'); // show the restart button
   }
 
-  // Puts the card back exactly as it was: chips empty, track empty, title and
-  // terminal reset, restart button hidden again.
+  // Restore the card to its initial state.
   function reset() {
     run++;
     clearTimeout(unlockTimer);
@@ -383,7 +375,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   restart.addEventListener('click', reset);
 
   chips.forEach((chip, i) => {
-    // no context menu or text selection from a long press on touch screens
+    // No context menu/selection on long press
     chip.addEventListener('contextmenu', (e) => e.preventDefault());
     chip.addEventListener('pointerdown', (e) => {
       if (e.button) return;
@@ -456,7 +448,7 @@ const contactBtn = $('contact-button');
 const honeypotInput = $('website');
 let sendTimeId = null;
 
-// Same outline style as the rest of the icons (24 viewBox, styled in CSS).
+// Outline icons (24 viewBox, styled in CSS)
 const STATUS_ICONS = {
   loading:
     '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M21 12a9 9 0 00-9-9"/></svg>',
@@ -513,8 +505,8 @@ contactForm.addEventListener('submit', (e) => {
 });
 
 /*=============== SCROLL REVEAL ===============*/
-// Everything rises from the bottom, fast, one piece at a time as it scrolls
-// into view. Skipped for users who prefer reduced motion.
+// Elements rise from the bottom as they scroll into view, one at a time.
+// Skipped for reduced motion.
 if (
   typeof ScrollReveal === 'function' &&
   ScrollReveal.isSupported() &&
@@ -530,31 +522,28 @@ if (
     viewOffset: { bottom: 40 },
     cleanup: true,
     once: true,
-    // ScrollReveal leaves an inline transform + 1.5s transition behind, which
-    // would beat the CSS hover/press transforms, so clear them once revealed.
+    // Clear ScrollReveal's inline transform/transition so CSS hover/press work.
     afterReveal: (el) => {
       el.style.removeProperty('transform');
       el.style.removeProperty('transition');
     },
   });
 
-  // True when the element is already on screen at page load (mirrors the
-  // viewFactor / viewOffset used above).
+  // True if already on screen at load (mirrors viewFactor/viewOffset).
   const visibleAtLoad = (el) => {
     const r = el.getBoundingClientRect();
     return r.top < innerHeight - 40 - r.height * 0.1 && r.bottom > 0;
   };
-  
-  // Reveals every match of `selector` on its own. Elements that sit in the
-  // same row (cards, tiles, certificates) enter one after another, `STEP` ms apart.
+
+  // Reveal each match; elements in the same row stagger by `STEP` ms.
   const STEP = 200;
   function reveal(selector, { base = 0, inOrder = false } = {}) {
     const els = [...document.querySelectorAll(selector)];
     let shown = 0;
     els.forEach((el, i) => {
       const sameRow = els.slice(0, i).filter((p) => p.offsetTop === el.offsetTop).length;
-      let delay = sameRow * STEP; // default
-      
+      let delay = sameRow * STEP;
+
       if (!inOrder) delay = base + sameRow * STEP;
       else if (visibleAtLoad(el)) delay = base + shown++ * STEP;
 
@@ -562,21 +551,21 @@ if (
     });
   }
 
-  // delay for the code card in the main section: on desktop it sits beside
-  // the hero card, on narrow screens it waits for the hero card's own pieces
+  // Code card delay: beside the hero card on desktop, after its pieces on mobile
   const heroSideBase = matchMedia('(min-width: 1024px)').matches ? 150 : 800;
 
-  // home: each piece on its own
+  // Home
   reveal('.hero-card > *', { base: 50, inOrder: true });
   reveal('.hero-side > *', { base: heroSideBase, inOrder: true });
 
-  // section titles
+  // Section titles
   reveal('.title');
 
-  // about, services, projects, certificates, contact
+  // About, services, projects, certificates, contact
   reveal('.split > *');
   reveal('.cards3 > .card');
   reveal('.proj-grid > .card');
   reveal('.certs-head');
   reveal('.cert');
 }
+
