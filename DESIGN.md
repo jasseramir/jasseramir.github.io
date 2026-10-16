@@ -20,6 +20,8 @@ Defined as custom properties on `:root`.
 | `--lav` | `#E6C8F5` | Primary soft fill: hero frame, pills, primary buttons, chips |
 | `--lav-h` | `#D8B5EB` | Hover for lavender |
 | `--sky` | `#BDE6FB` | Secondary soft fill: skills card, certificates panel |
+| `--mint` | `#A6EBC9` | Text selection, easter egg terminal text and checks |
+| `--err` | `#E5484D` | Form failure state |
 | `--navy` | `#1A1D27` | Dark surface and primary action: contact panel, dark buttons |
 | `--off` | `#F7F7F8` | Page background and header |
 | `--soft` | `#EFEDF1` | Quiet fill: stats bar, inputs, tags |
@@ -143,14 +145,14 @@ Form status text appears next to the send button and hides itself after 3.5 seco
 
 Motion is minimal and purely functional.
 
-- Scroll reveal: every block rises 24px from the bottom while fading in, over 300ms, once, as it enters the viewport. The header is never animated. Each piece of the hero, each section title, and each card, tile, and certificate reveals on its own. Items in the same row are staggered 80ms apart. Powered by ScrollReveal, configured at the bottom of `main.js`.
+- Scroll reveal: every block rises 24px from the bottom while fading in, over 1.5s, once, as it enters the viewport. The header is never animated. Each piece of the hero, each section title, and each card, tile, and certificate reveals on its own. Items in the same row are staggered 200ms apart (the hero side card starts at 150ms beside the hero card on desktop, 800ms after its pieces on mobile). Powered by ScrollReveal, configured at the bottom of `main.js`.
 - Smooth scrolling for anchor navigation.
 - Short color transitions on links and buttons (0.15s to 0.5s).
 - Hover and press: buttons (`.btn`), nav links, the logo, footer links, and the burger grow to `scale(1.05)` on hover and shrink to `scale(.95)` while pressed. Service, project, and certificate cards lift with `translateY(-6px)` on hover (no shadow, to stay flat). Hover rules sit inside `@media (hover: hover)` so taps on phones don't leave a stuck state. Disabled buttons don't react. After each ScrollReveal finishes, `main.js` clears its inline `transform` and `transition` so these CSS transforms work.
 - Drawer slide of 0.35s.
 - Cursor: on devices with a fine, hovering pointer, the native cursor is replaced by a navy paper plane (tilted 16°, white outline) built in `main.js`. Over links and buttons it fades to a lavender plane with a navy outline in 150ms. Over a disabled button (the send button while sending) it shows the navy plane with a small cobalt spinner badge, the same spinner as the sending icon. Over text fields it becomes a navy I-beam with a white outline. Touch screens keep the native cursor, and the colors come from the `--navy`, `--lav`, `--cobalt` and `--line` tokens.
 
-- Skills easter egg: the skill chips are buttons that grow to `scale(1.05)` and darken slightly on hover (hover devices only). Pressing and holding a chip squares it off (6px radius) while a navy fill rises over 0.9s; release early and it drains back. When all nine are full, the sky card turns navy and its chips are replaced by a build terminal (mint text, check drawn as an SVG with the same `M5 13l4 4L19 7` path as the form success icon). The chips and terminal share one grid cell, so the card never changes size; the progress track (the old divider line) and the Contact Me button stay. Built in `main.js` ("Skills easter egg") and styled under `.skills` in `styles.css`. A circular restart button next to the "Core Stack" pill appears once the terminal has finished typing and resets the card to its starting state. Every terminal line has a two-character gutter (`$`, `>`, `//`, or an icon) so the text lines up in one column. The terminal reserves five lines of height, so keep the copy to five lines. The words live in the `COPY` object at the top of the "Skills easter egg" block in `main.js`.
+- Skills easter egg: the skill chips are buttons that grow to `scale(1.05)` and darken slightly on hover (hover devices only). Pressing and holding a chip squares it off (6px radius) while a navy fill rises over 0.65s (`HOLD` in `main.js`); release early and it drains back. When all nine are full, the sky card turns navy and its chips are replaced by a build terminal (mint text, check drawn as an SVG with the same `M5 13l4 4L19 7` path as the form success icon). The chips and terminal share one grid cell, so the card never changes size; the progress track (the old divider line) and the Contact Me button stay. Built in `main.js` ("Skills easter egg") and styled under `.skills` in `styles.css`. A circular restart button next to the "Core Stack" pill appears once the terminal has finished typing and resets the card to its starting state. Every terminal line has a two-character gutter (`$`, `>`, `//`, or an icon) so the text lines up in one column. The terminal reserves five lines of height, so keep the copy to five lines. The words live in the `COPY` object at the top of the "Skills easter egg" block in `main.js`.
 
 Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are turned off, and scroll reveal is not initialized.
 
@@ -161,7 +163,7 @@ Under `prefers-reduced-motion: reduce`, smooth scrolling and all transitions are
 - The burger button exposes `aria-expanded` and `aria-controls`.
 - The form status uses `role="status"` and `aria-live="polite"`.
 - Every form field has an associated `label`.
-- Text selection uses the lavender brand color with navy text.
+- Text selection uses mint (`--mint`) with navy text.
 
 ## Extending the System
 
@@ -174,3 +176,4 @@ When adding a new component:
 5. Build mobile styles first, then add changes at 640px, 768px, and 1024px.
 6. Make sure the component still looks right with long text and with a single item, since content comes from data files.
 7. Render user-facing data through the `esc()` helper in `main.js` before inserting it as HTML.
+

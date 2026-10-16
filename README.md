@@ -16,7 +16,8 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 - **Fully responsive.** Mobile-first layout with a slide-down drawer menu below 768px (tap anywhere or swipe up to close).
 - **Accessible by default.** Semantic landmarks, labelled navigation, `aria-expanded` on the menu button, `aria-live` form status, visible focus rings, and `prefers-reduced-motion` support.
 - **Custom cursor.** On desktop, a paper-plane cursor that fades to lavender over links and buttons, shows a spinner badge over a disabled button, and turns into an I-beam over text fields. Touch screens keep the native cursor.
-- **Scroll reveal animations.** Every block rises from the bottom in 300ms as it scrolls into view, with cards, tiles, and certificates staggered 80ms apart. Powered by ScrollReveal and disabled under `prefers-reduced-motion`.
+- **Scroll reveal animations.** Every block rises from the bottom over 1.5s as it scrolls into view, with cards, tiles, and certificates staggered 200ms apart. Powered by ScrollReveal and disabled under `prefers-reduced-motion`.
+- **Skills easter egg.** Press and hold each skill chip to fill it. Fill all nine and the card turns into a "build passed" terminal, with a restart button to reset it.
 - **Scroll-spy navigation.** The active link follows the section in view using `IntersectionObserver`.
 - **Contact form with spam protection.** EmailJS delivery plus a hidden honeypot field.
 - **XSS-safe rendering.** All data-driven strings are HTML-escaped before being injected.
@@ -45,7 +46,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | CSS3 | Custom properties, Grid, Flexbox, media queries |
 | JavaScript (ES6+) | Rendering from data, menu, scroll-spy, scroll reveal, form handling |
 | [ScrollReveal](https://scrollrevealjs.org/) v4 | Scroll-in animations, bundled locally in `assets/js/main/scrollreveal.min.js` |
-| [EmailJS](https://www.emailjs.com/) | Client-side email sending, loaded from jsDelivr |
+| [EmailJS](https://www.emailjs.com/) | Client-side email sending, self-hosted as a trimmed build (`sendForm` only) in `assets/js/main/email.min.js` |
 | [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Typeface, loaded from Google Fonts |
 
 Icons are inline SVGs styled by a single rule in the stylesheet, so there is no icon library to load.
@@ -69,15 +70,17 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
     │   │   ├── projects.js       # Project cards data
     │   │   └── certificates.js   # Certificate cards data
     │   └── main/
-    │       ├── scrollreveal.min.js  # ScrollReveal library
-    │       └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, contact form
+    │       ├── scrollreveal.min.js  # ScrollReveal library (trimmed)
+│       ├── email.min.js      # EmailJS (trimmed to sendForm)
+    │       └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, skills easter egg, contact form
     ├── img/
-    │   └── logos/                # Favicons, Apple touch icon, social preview
+    │   ├── logos/                # Favicons, Apple touch icon, Android icons, site.webmanifest, social preview
+    │   └── screenshots/          # README screenshot
     └── docs/
         └── jasser_amir_resume.pdf
 ```
 
-Script order matters. `index.html` loads EmailJS, then `projects.js`, then `certificates.js`, then `scrollreveal.min.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals and the `ScrollReveal` global.
+Script order matters. `index.html` loads `email.min.js`, then `projects.js`, then `certificates.js`, then `scrollreveal.min.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals and the `ScrollReveal` and `emailjs` globals.
 
 ---
 
@@ -165,3 +168,4 @@ This project is not licensed for reuse or redistribution.
 - **LinkedIn:** [linkedin.com/in/jasser-amir-37428a3b1](https://www.linkedin.com/in/jasser-amir-37428a3b1)
 - **GitHub:** [github.com/jasseramir](https://github.com/jasseramir)
 - **Email:** through the contact form on the [live site](https://jasseramir.github.io/#contact)
+
