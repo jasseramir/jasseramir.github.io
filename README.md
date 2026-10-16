@@ -71,7 +71,7 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
     │   │   └── certificates.js   # Certificate cards data
     │   └── main/
     │       ├── scrollreveal.min.js  # ScrollReveal library (trimmed)
-│       ├── email.min.js      # EmailJS (trimmed to sendForm)
+    │       ├── email.min.js      # EmailJS (trimmed to sendForm)
     │       └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, skills easter egg, contact form
     ├── img/
     │   ├── logos/                # Favicons, Apple touch icon, Android icons, site.webmanifest, social preview
