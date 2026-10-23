@@ -7,7 +7,7 @@ This document describes the visual language of the portfolio so new sections and
 1. **Flat.** No shadows, anywhere. Depth comes from color blocks, borders, and spacing. The stylesheet enforces this with `box-shadow: none !important` and `text-shadow: none !important` on `*`.
 2. **Soft and rounded.** Large radii and pill shapes. Nothing has sharp corners.
 3. **Color as structure.** Lavender, sky, white, and navy blocks separate content instead of dividers and heavy chrome.
-4. **One typeface, strong weights.** Hierarchy is made with weight (700 to 900) and size, not with extra fonts.
+4. **One typeface, strong weights.** Hierarchy is made with weight (700 to 900) and size, not with extra fonts. The only exceptions are the code window and the form fields (see Typography).
 5. **Content-first.** Sections are driven by data, so every component must look right with any amount of text.
 
 ## Color
@@ -51,7 +51,7 @@ Cards use one of three tones, set by a class:
 
 ## Typography
 
-**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), loaded from Google Fonts, with `sans-serif` fallback. The only exception is the hero code window, which uses the system monospace stack.
+**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), loaded from Google Fonts, with `sans-serif` fallback. There are two exceptions: the hero code window, which uses the system monospace stack, and the form fields (inputs and the textarea), which use **Rubik** (weight 400, also from Google Fonts) so Arabic text renders well. Rubik falls back to Plus Jakarta Sans, then `sans-serif`, so Latin text still looks right.
 
 | Use | Size | Weight | Notes |
 | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ Icons are inline SVGs on a 24×24 viewBox, outline style. One global rule sets `
 
 ### Forms
 
-Inputs and the textarea use the `--soft` fill, 14px radius, no border, and no resize. Labels are uppercase 11px. Focus shows a 2px lavender outline. The honeypot field is positioned off-screen (`.hp`) and hidden from assistive tech with `aria-hidden`.
+Inputs and the textarea use the `--soft` fill, 14px radius, no border, and no resize. They are set in Rubik (400) instead of Plus Jakarta Sans, because Rubik covers Arabic as well as Latin; placeholders inherit it. Labels are uppercase 11px. Focus shows a 2px lavender outline. The honeypot field is positioned off-screen (`.hp`) and hidden from assistive tech with `aria-hidden`.
 
 Form status text appears next to the send button and hides itself after 3.5 seconds. It carries a 22px outline icon (set in `main.js`, styled in CSS): a cobalt spinner while sending, a navy check on a lavender circle on success, and a white cross on a navy circle on failure. The spinner stops turning under `prefers-reduced-motion`.
 

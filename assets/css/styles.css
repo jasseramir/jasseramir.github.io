@@ -1215,6 +1215,7 @@ textarea {
   border-radius: 14px;
   padding: 12px 14px;
   font-size: 14px;
+  font-family: 'Rubik', 'Plus Jakarta Sans', sans-serif;
 }
 
 input::placeholder,
