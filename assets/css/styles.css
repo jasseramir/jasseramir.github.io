@@ -1626,7 +1626,7 @@ footer li a {
   }
 
   .cert {
-    flex: 1 1 calc((100% - 48px) / 3);
+    flex: 0 1 calc((100% - 48px) / 3);
     max-width: 100%;
     min-width: 0;
     padding: 20px;
