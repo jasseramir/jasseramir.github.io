@@ -1,5 +1,5 @@
 /*=============== CERTIFICATES ===============*/
-// The monthes are written in letters
+// The months are written in letters
 
 const certificates = [
   {

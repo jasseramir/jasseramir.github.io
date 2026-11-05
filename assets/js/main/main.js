@@ -1,4 +1,6 @@
 /*=============== HELPERS ===============*/
+// $ = getElementById. esc() escapes data before it is injected as HTML.
+// ARROW is the external-link icon used on buttons.
 const $ = (id) => document.getElementById(id);
 const ESCAPES = {
   '&': '&amp;',
@@ -12,6 +14,7 @@ const ARROW =
   '<svg viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>';
 
 /*=============== MOBILE MENU ===============*/
+// The drawer opens from the burger button and closes on tap, swipe up or Escape.
 const burger = $('burger');
 const drawer = $('drawer');
 const scrim = $('scrim');
@@ -45,12 +48,15 @@ document.addEventListener(
   },
   { passive: true },
 );
+// Escape to close
 document.addEventListener(
   'keydown',
   (e) => e.key === 'Escape' && setMenu(false),
 );
 
 /*=============== ACTIVE LINK ===============*/
+// Scroll-spy: a section counts as "in view" when it crosses a thin strip
+// near the middle of the screen, and its nav link gets the `on` class.
 const navLinks = document.querySelectorAll('#nav a, #drawer a.l');
 const spy = new IntersectionObserver(
   (entries) => entries.forEach((e) => {
@@ -63,72 +69,10 @@ const spy = new IntersectionObserver(
 );
 document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));
 
-/*=============== CUSTOM CURSOR ===============*/
-// Paper-plane cursor (fine pointers only; touch keeps the native one).
-// Lavender over clickable items, spinner badge over disabled buttons,
-// I-beam over text fields.
-if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
-  const TILT = 16;
-  const PLANE = 'M7 6L25.5 14L17.5 18L12.5 25.5Z';
-  const CLICKABLE =
-    'a, button:not(:disabled), [role="button"], label[for], summary';
-  const plane = (cls, extra = '') =>
-    `<svg class="${cls}" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(${TILT} 7 6)"><path class="o" d="${PLANE}"/><path class="b" d="${PLANE}"/></g>${extra}</svg>`;
-  // Wait: the plane plus a small spinner badge
-  const BADGE =
-    '<circle class="bg" cx="25" cy="27" r="6.5"/><g class="sp"><circle class="tr" cx="25" cy="27" r="3.8"/><path class="ar" d="M28.8 27a3.8 3.8 0 00-3.8-3.8"/></g>';
-  // Text: I-beam (outline path first, navy on top)
-  const IBEAM = 'M12 6.5h8M16 6.5v19M12 25.5h8';
-  const ibeam = `<svg class="t" viewBox="0 0 32 32" aria-hidden="true"><path class="o" d="${IBEAM}"/><path class="b" d="${IBEAM}"/></svg>`;
-
-  const cursor = document.createElement('div');
-  cursor.className = 'cur';
-  cursor.innerHTML = plane('d') + plane('p') + plane('w', BADGE) + ibeam;
-  document.body.appendChild(cursor);
-  document.documentElement.classList.add('custom-cursor');
-
-  let lastX = 0;
-  let lastY = 0;
-  let lastTouch = false;
-
-  // Pick the cursor layer for the element under the pointer.
-  // While the Easter egg types, the whole skills card shows the wait cursor.
-  function paint(target) {
-    const typing =
-      document.documentElement.classList.contains('egg-typing') &&
-      !!target?.closest?.('#skills');
-    const wait = typing || !!target?.closest?.('button:disabled');
-    const txt = !wait && !!target?.closest?.('input, textarea');
-    cursor.classList.toggle('wait', wait);
-    cursor.classList.toggle('txt', txt);
-    cursor.classList.toggle(
-      'ptr',
-      !wait && !txt && !!target?.closest?.(CLICKABLE),
-    );
-  }
-
-  document.addEventListener(
-    'pointermove',
-    (e) => {
-      lastTouch = e.pointerType === 'touch';
-      if (lastTouch) return;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      cursor.classList.add('on');
-      paint(e.target);
-    },
-    { passive: true },
-  );
-  // Typing started/stopped while the mouse was still
-  document.addEventListener('eggtyping', () => {
-    if (lastTouch || !cursor.classList.contains('on')) return;
-    paint(document.elementFromPoint(lastX, lastY));
-  });
-  document.documentElement.addEventListener('mouseleave', () =>
-    cursor.classList.remove('on'),
-  );
-}
+/*=============== HERO COUNTERS ===============*/
+// Counters come from the data files, so adding an entry updates them.
+$('stat-projects').textContent = projects.length;
+$('stat-certs').textContent = certificates.length;
 
 /*=============== SKILLS EASTER EGG ===============*/
 // Hold every skill chip until it fills. When all are full, the card turns into
@@ -145,16 +89,19 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     compiled: (count) => `${count}/${count} skills compiled`, // gets the check
     result: '0 errors, 0 warnings', // gets the check
     secret: 'YOU FOUND THE EASTER EGG!', // "//" is added automatically
-    closing: "NEXT STEP: BUILD IT TOGETHER", // same
+    closing: "NEXT STEP: BUILD IT TOGETHER", // "//" is added automatically
   };
   // -----------------------------
 
+  // Elements
   const card = $('skills');
   const chips = [...card.querySelectorAll('.chips button')];
   const term = $('skills-term');
   const title = $('skills-title');
   const bar = $('skills-bar');
   const restart = $('skills-restart');
+
+  // Timing and icon
   const HOLD = 650; // ms to fill a chip
   const DRAIN = HOLD / 3; // ms to empty a released chip
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -162,6 +109,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const CHECK =
     '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 13l4 4L19 7"/></svg>';
 
+  // State: one entry per chip, plus the animation and terminal flags
   const names = chips.map((c) => c.textContent.trim());
   const originalTitle = title.textContent;
   const progress = chips.map(() => 0);
@@ -173,6 +121,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   let run = 0; // bumped on restart to stop a half-typed terminal
   let unlockTimer = 0;
 
+  // Give each chip a fill layer and wrap its label
   const fills = chips.map((chip, i) => {
     const fill = document.createElement('i');
     fill.className = 'fill';
@@ -183,6 +132,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     return fill;
   });
 
+  // Press or release a chip
   function press(i, on) {
     if (unlocked || done[i]) return;
     held[i] = on;
@@ -191,6 +141,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     if (on) start();
   }
 
+  // Animation loop: fills held chips, drains released ones, stops when idle
   function start() {
     if (running) return;
     running = true;
@@ -248,6 +199,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     card.classList.toggle('holding', held.some(Boolean));
   }
 
+  // A chip is full; when all are, start the terminal
   function complete(i) {
     done[i] = true;
     held[i] = false;
@@ -256,7 +208,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     navigator.vibrate?.(15);
     const count = done.filter(Boolean).length;
     paintBar();
-    // Pulse as the bar locks in
+    // Pulse as the bar locks in (offsetWidth forces a reflow so it replays)
     bar.classList.remove('lock');
     void bar.offsetWidth;
     bar.classList.add('lock');
@@ -266,6 +218,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     }
   }
 
+  // Terminal helpers: delay, line with gutter, typing effect, wait-cursor flag
   const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? 0 : ms));
 
   // Add a terminal line with a two-character gutter ("$", ">", "//" or icon)
@@ -308,6 +261,8 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     document.dispatchEvent(new Event('eggtyping'));
   }
 
+  // Play the build terminal. `live()` turns false after a restart, which
+  // stops every step that is still waiting.
   async function unlock() {
     const id = run;
     const live = () => id === run;
@@ -329,7 +284,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     if (!live()) return;
     status.out.className = '';
     status.out.textContent = '';
-    await type(status.out, COPY.compiled(names.length), 130, live); // slowest line
+    await type(status.out, COPY.compiled(names.length), 130, live);
     if (!live()) return;
     status.gutter.className = 'g';
     status.gutter.innerHTML = CHECK;
@@ -372,6 +327,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     chips[0].focus({ preventScroll: true });
   }
 
+  // Events: restart button, then pointer and keyboard on each chip
   restart.addEventListener('click', reset);
 
   chips.forEach((chip, i) => {
@@ -399,13 +355,16 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
 })();
 
 /*=============== PROJECTS ===============*/
+// Cards are built from projects.js. Tones cycle white, sky, lavender.
 const projectsContainer = $('projects-container');
 const tones = ['c-white', 'c-sky', 'c-lav'];
 
+// One card. With a live demo it gets two buttons, otherwise a single
+// "View Repository" button.
 function projectCard(p, i) {
   const tone = tones[i % 3];
   const white = tone === 'c-white';
-  const repo = `<a class="btn navy" href="${esc(p.projectGithubSrc)}" target="_blank" rel="noopener">${p.projectLink ? 'GitHub' : `View Repository ${ARROW}`}</a>`;
+  const repo = `<a class="btn navy" href="${esc(p.projectGithubSrc)}" target="_blank" rel="noopener">View Repository ${ARROW}</a>`;
   const actions = p.projectLink
     ? `<a class="btn navy" href="${esc(p.projectLink)}" target="_blank" rel="noopener">Live Demo ${ARROW}</a>
        <a class="btn ${white ? 'soft' : 'white'}" href="${esc(p.projectGithubSrc)}" target="_blank" rel="noopener">View Repository ${ARROW}</a>`
@@ -427,10 +386,8 @@ function renderProjects() {
 
 renderProjects();
 
-$('stat-projects').textContent = projects.length;
-$('stat-certs').textContent = certificates.length;
-
 /*=============== CERTIFICATES ===============*/
+// Certificate tiles are built from certificates.js.
 $('certificates-container').innerHTML = certificates.map((c) => `
   <div class="cert">
     <div class="cert-data">
@@ -442,6 +399,8 @@ $('certificates-container').innerHTML = certificates.map((c) => `
   </div>`).join('');
 
 /*=============== CONTACT (EMAILJS) ===============*/
+// The form sends through EmailJS and shows its status next to the send button.
+// A hidden honeypot field catches bots.
 const contactForm = $('contact-form');
 const contactMessage = $('contact-message');
 const contactBtn = $('contact-button');
@@ -470,6 +429,7 @@ async function sendEmail() {
     contactBtn.disabled = true;
     setStatus('Sending...', 'loading');
 
+    // Honeypot filled means a bot: fake success and send nothing
     if (honeypotInput.value !== '') {
       setStatus('Sent successfully', 'ok');
       contactForm.reset();
@@ -504,9 +464,77 @@ contactForm.addEventListener('submit', (e) => {
   sendEmail();
 });
 
+/*=============== CUSTOM CURSOR ===============*/
+// Page-wide. Paper-plane cursor (fine pointers only; touch keeps the native one).
+// Lavender over clickable items, spinner badge over disabled buttons,
+// I-beam over text fields.
+if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  const TILT = 16;
+  const PLANE = 'M7 6L25.5 14L17.5 18L12.5 25.5Z';
+  const CLICKABLE =
+    'a, button:not(:disabled), [role="button"], label[for], summary';
+  const plane = (cls, extra = '') =>
+    `<svg class="${cls}" viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(${TILT} 7 6)"><path class="o" d="${PLANE}"/><path class="b" d="${PLANE}"/></g>${extra}</svg>`;
+  // Wait cursor: the plane plus a small spinner badge
+  const BADGE =
+    '<circle class="bg" cx="25" cy="27" r="6.5"/><g class="sp"><circle class="tr" cx="25" cy="27" r="3.8"/><path class="ar" d="M28.8 27a3.8 3.8 0 00-3.8-3.8"/></g>';
+  // Text cursor: I-beam (outline path first, navy on top)
+  const IBEAM = 'M12 6.5h8M16 6.5v19M12 25.5h8';
+  const ibeam = `<svg class="t" viewBox="0 0 32 32" aria-hidden="true"><path class="o" d="${IBEAM}"/><path class="b" d="${IBEAM}"/></svg>`;
+
+  const cursor = document.createElement('div');
+  cursor.className = 'cur';
+  cursor.innerHTML = plane('d') + plane('p') + plane('w', BADGE) + ibeam;
+  document.body.appendChild(cursor);
+  document.documentElement.classList.add('custom-cursor');
+
+  let lastX = 0;
+  let lastY = 0;
+  let lastTouch = false;
+
+  // Pick the cursor layer for the element under the pointer.
+  // While the Easter egg types, the whole skills card shows the wait cursor.
+  function paint(target) {
+    const typing =
+      document.documentElement.classList.contains('egg-typing') &&
+      !!target?.closest?.('#skills');
+    const wait = typing || !!target?.closest?.('button:disabled');
+    const txt = !wait && !!target?.closest?.('input, textarea');
+    cursor.classList.toggle('wait', wait);
+    cursor.classList.toggle('txt', txt);
+    cursor.classList.toggle(
+      'ptr',
+      !wait && !txt && !!target?.closest?.(CLICKABLE),
+    );
+  }
+
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      lastTouch = e.pointerType === 'touch';
+      if (lastTouch) return;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      cursor.classList.add('on');
+      paint(e.target);
+    },
+    { passive: true },
+  );
+  // Repaint when the egg starts or stops typing while the mouse is still
+  document.addEventListener('eggtyping', () => {
+    if (lastTouch || !cursor.classList.contains('on')) return;
+    paint(document.elementFromPoint(lastX, lastY));
+  });
+  document.documentElement.addEventListener('mouseleave', () =>
+    cursor.classList.remove('on'),
+  );
+}
+
 /*=============== SCROLL REVEAL ===============*/
-// Elements rise from the bottom as they scroll into view, one at a time.
-// Skipped for reduced motion.
+// Page-wide. Elements rise from the bottom as they scroll into view, one at a
+// time. Skipped for reduced motion. Keep this block last: it targets the cards
+// created by the render blocks above.
 if (
   typeof ScrollReveal === 'function' &&
   ScrollReveal.isSupported() &&
@@ -568,4 +596,3 @@ if (
   reveal('.certs-head');
   reveal('.cert');
 }
-
