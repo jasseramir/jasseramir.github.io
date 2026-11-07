@@ -1007,13 +1007,68 @@ section {
 
 /* === SERVICES === */
 
-.cards3 {
-  display: grid;
-  gap: 16px;
+#services {
+  min-height: calc(100vh - var(--hh) - 8px - 48px);
+  min-height: calc(100svh - var(--hh) - 8px - 48px);
+}
+
+.svc-swiper {
+  display: flex;
+  margin-inline: -16px;
+  padding-block: 6px;
+}
+
+.svc-swiper .swiper-wrapper {
+  height: auto;
+}
+
+.svc-swiper .swiper-slide {
+  width: 82%;
+  height: auto;
+  opacity: .55;
+  transform: scale(.85);
+  transition: transform .5s ease, opacity .5s ease, transform-origin .5s ease;
+}
+
+.svc-swiper .swiper-slide-prev {
+  transform-origin: right center;
+}
+
+.svc-swiper .swiper-slide-next {
+  transform-origin: left center;
+}
+
+.svc-swiper .swiper-slide-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.svc-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: auto;
+}
+
+.svc-arrow {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  justify-content: center;
+}
+
+.svc-arrow svg {
+  width: 20px;
+  height: 20px;
 }
 
 .svc {
-  min-height: auto;
+  height: 100%;
+  min-height: 380px;
+}
+
+.svc p + p {
+  margin-top: 12px;
 }
 
 .ico {
@@ -1547,6 +1602,23 @@ footer li a {
     font-size: 1.875rem;
   }
 
+  .svc-swiper {
+    margin-inline: -24px;
+  }
+
+  #services {
+    min-height: calc(100vh - var(--hh) - 8px - 96px);
+    min-height: calc(100svh - var(--hh) - 8px - 96px);
+  }
+
+  .svc-swiper .swiper-slide {
+    width: 66%;
+  }
+
+  .svc {
+    min-height: 420px;
+  }
+
   .certs {
     padding: 32px;
     border-radius: 32px;
@@ -1605,10 +1677,6 @@ footer li a {
   .drawer,
   .scrim {
     display: none !important;
-  }
-
-  .cards3 {
-    gap: 24px;
   }
 
   .proj-grid {
@@ -1688,7 +1756,10 @@ footer li a {
     grid-column: span 5;
   }
 
-  .cards3,
+  .svc-swiper {
+    margin-inline: 0;
+  }
+
   .proj-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1707,6 +1778,38 @@ footer li a {
 
   .formcard {
     grid-column: span 7;
+  }
+}
+
+/* Short screens: tighten the service cards so the arrows stay on screen. */
+@media (max-height: 720px) {
+  .svc {
+    min-height: 0;
+    padding: 20px 24px;
+  }
+
+  .svc .ico {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 12px;
+  }
+
+  .svc .ico svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .svc h3 {
+    margin-bottom: 6px;
+  }
+
+  .svc p + p {
+    margin-top: 8px;
+  }
+
+  .svc .foot {
+    margin-top: 12px;
+    padding-top: 12px;
   }
 }
 

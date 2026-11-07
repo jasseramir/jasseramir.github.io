@@ -354,6 +354,25 @@ $('stat-certs').textContent = certificates.length;
   });
 })();
 
+/*=============== SERVICES SWIPER ===============*/
+// Services are a Swiper carousel: one big centered card on phones, three at
+// 1024px and up. Neighbours are smaller and faded (see .svc-swiper in CSS).
+// Arrows sit under the cards; touch and mouse drag work too.
+new Swiper('.svc-swiper', {
+  loop: true,
+  centeredSlides: true,
+  slidesPerView: 'auto',
+  spaceBetween: 8,
+  speed: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500,
+  navigation: { prevEl: '#svc-prev', nextEl: '#svc-next' },
+  keyboard: { enabled: true, onlyInViewport: true },
+  a11y: { prevSlideMessage: 'Previous service', nextSlideMessage: 'Next service' },
+  breakpoints: {
+    640: { slidesPerView: 'auto', spaceBetween: 20 },
+    1024: { slidesPerView: 3, spaceBetween: 24 },
+  },
+});
+
 /*=============== PROJECTS ===============*/
 // Cards are built from projects.js. Tones cycle white, sky, lavender.
 const projectsContainer = $('projects-container');
@@ -591,7 +610,7 @@ if (
 
   // About, services, projects, certificates, contact
   reveal('.split > *');
-  reveal('.cards3 > .card');
+  reveal('.svc-swiper, .svc-nav');
   reveal('.proj-grid > .card');
   reveal('.certs-head');
   reveal('.cert');

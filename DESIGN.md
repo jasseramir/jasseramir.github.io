@@ -1,6 +1,6 @@
 # Design System
 
-This document describes the visual language of the portfolio so new sections and components stay consistent. Every value here comes from `assets/css/styles.css`.
+This document describes the visual language of the portfolio so new sections and components stay consistent. Every value here comes from `assets/styles/main/styles.css`.
 
 ## Principles
 
@@ -96,9 +96,9 @@ Mobile-first. Breakpoints:
 | Breakpoint | Changes |
 | --- | --- |
 | below 640px | Metrics become a vertical list with cobalt bullets. Buttons stack full width. |
-| 640px | Larger type, padding, radii, and section gaps. Form fields split into two columns. Footer goes horizontal. |
-| 768px | Desktop nav appears and the drawer and burger are removed. Services stack in a single column. Projects form two columns. Certificates become tiles in a wrapping row. Hero becomes two columns at 1024px. |
-| 1024px | 12-column grid for About (7 / 5) and Contact (5 / 7). Services and Projects form three columns. |
+| 640px | Larger type, padding, radii, and section gaps. Service slides become 66% wide and the carousel bleeds 24px instead of 16px. Form fields split into two columns. Footer goes horizontal. |
+| 768px | Desktop nav appears and the drawer and burger are removed. Projects form two columns. Certificates become tiles in a wrapping row. Hero becomes two columns at 1024px. |
+| 1024px | 12-column grid for About (7 / 5) and Contact (5 / 7). Services show three cards at once in the carousel. Projects form three columns. |
 
 Certificate tiles use `flex: 1 1 calc((100% - 48px) / 3)`, so there are at most three per row, fewer certificates stretch to fill the row, and extras wrap.
 
@@ -128,6 +128,10 @@ Buttons that open another site use an inline arrow SVG and `target="_blank" rel=
 ### Icons
 
 Icons are inline SVGs on a 24×24 viewBox, outline style. One global rule sets `fill: none`, `stroke: currentColor`, `stroke-width: 2.2`, round caps and joins, and a default size of 16px. Icons inherit text color. Larger icon tiles (`.ico`) use a 44px rounded square holding a 22px icon.
+
+### Services carousel
+
+Services use Swiper (`.svc-swiper`), initialized in the "Services swiper" block of `main.js`. The active slide is centered at full size; its neighbours are `scale(.85)` and `opacity: .55`, so the active card is told apart by size and color, not by a shadow. Below 1024px one card shows (82% of the width, 66% from 640px) and the carousel bleeds to the screen edges so a sliver of each neighbour (about 24px on phones) shows that it swipes; neighbours scale toward their outer edge so that sliver stays put. From 1024px three cards show inside the page width. The two round `.btn.navy` arrows (`.svc-arrow`) sit centered under the cards, and touch, mouse drag and the keyboard arrow keys also work. Each card holds an icon, a heading, two paragraphs and a footer label. The `#services` section is at least one screen tall (`100svh` minus the header offset and the gap to the next section), so jumping to it from the nav shows the cards and arrows with nothing of Projects peeking in. Cards keep the height of their content (the tallest card sets the row height); any spare screen height goes below the arrows (`.svc-nav` has `margin-bottom: auto`), so the title, cards and arrows stay together at the top of the section. Cards never stretch to fill the screen. On screens under 720px tall the cards tighten (`max-height: 720px` block) to keep the arrows on screen. It loops, so keep at least six services. Every breakpoint in the Swiper options sets `slidesPerView` itself, because a breakpoint only overrides the values it lists and would otherwise keep the previous one when the screen shrinks. The script is a trimmed custom build (Core, Navigation, Keyboard, A11y), so features outside those need a rebuild (see the README). Hover lift sits on the `.svc` card and the scale on its `.swiper-slide`, so the two transforms never fight.
 
 ### Navigation
 

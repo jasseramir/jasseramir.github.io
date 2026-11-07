@@ -31,7 +31,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | --- | --- |
 | **Home** | Headline, availability, a flat browser-window illustration, live counters (projects, certificates), resume and project shortcuts |
 | **About** | Short bio, approach tags, and the core skills list |
-| **Services** | Web Design, Development, Responsive Design |
+| **Services** | A swipeable carousel of six services: Web Design, Development, Responsive Design, Performance Optimization, Accessibility & SEO, Maintenance & Fixes |
 | **Projects** | Cards with live demo and repository links |
 | **Certificates** | Verified credentials with issuer, date, and a link to each certificate |
 | **Contact** | EmailJS form, LinkedIn, and GitHub |
@@ -45,8 +45,9 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | HTML5 | Semantic structure |
 | CSS3 | Custom properties, Grid, Flexbox, media queries |
 | JavaScript (ES6+) | Rendering from data, menu, scroll-spy, scroll reveal, form handling |
-| [ScrollReveal](https://scrollrevealjs.org/) v4 | Scroll-in animations, bundled locally in `assets/js/main/scrollreveal.min.js` |
-| [EmailJS](https://www.emailjs.com/) | Client-side email sending, self-hosted as a trimmed build (`sendForm` only) in `assets/js/main/email.min.js` |
+| [ScrollReveal](https://scrollrevealjs.org/) v4 | Scroll-in animations, bundled locally in `assets/scripts/libs/scrollreveal.min.js` |
+| [Swiper](https://swiperjs.com/) v11 | Services carousel, a trimmed custom build (Core, Navigation, Keyboard, A11y; about 79 KB instead of 151 KB) in `assets/scripts/libs/swiper.min.js`, with its trimmed styles in `assets/styles/libs/swiper.min.css` |
+| [EmailJS](https://www.emailjs.com/) | Client-side email sending, self-hosted as a trimmed build (`sendForm` only) in `assets/scripts/libs/email.min.js` |
 | [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Typeface, loaded from Google Fonts |
 
 Icons are inline SVGs styled by a single rule in the stylesheet, so there is no icon library to load.
@@ -63,16 +64,21 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
 ├── DESIGN.md
 ├── .prettierrc
 └── assets/
-    ├── css/
-    │   └── styles.css            # Tokens, layout, components, responsive rules
-    ├── js/
+    ├── styles/
+    │   ├── main/
+    │   │   └── styles.css        # Tokens, layout, components, responsive rules
+    │   └── libs/
+    │       └── swiper.min.css    # Swiper styles, trimmed to the rules the carousel uses
+    ├── scripts/
     │   ├── data/
     │   │   ├── projects.js       # Project cards data
     │   │   └── certificates.js   # Certificate cards data
-    │   └── main/
+    │   ├── main/
+    │   │   └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, skills easter egg, contact form
+    │   └── libs/
+    │       ├── email.min.js         # EmailJS (trimmed to sendForm)
     │       ├── scrollreveal.min.js  # ScrollReveal library (trimmed)
-    │       ├── email.min.js      # EmailJS (trimmed to sendForm)
-    │       └── main.js           # Menu, scroll-spy, cursor, rendering, reveal animations, skills easter egg, contact form
+    │       └── swiper.min.js        # Swiper 11 trimmed build (Core, Navigation, Keyboard, A11y)
     ├── img/
     │   ├── logos/                # Favicons, Apple touch icon, Android icons, site.webmanifest, social preview
     │   └── screenshots/          # README screenshot
@@ -80,7 +86,7 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
         └── jasser_amir_resume.pdf
 ```
 
-Script order matters. `index.html` loads `email.min.js`, then `projects.js`, then `certificates.js`, then `scrollreveal.min.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals and the `ScrollReveal` and `emailjs` globals.
+Script order matters. `index.html` loads `email.min.js`, then `projects.js`, then `certificates.js`, then `scrollreveal.min.js`, then `swiper.min.js`, then `main.js`, because `main.js` reads the `projects` and `certificates` globals and the `ScrollReveal`, `Swiper` and `emailjs` globals.
 
 ---
 
@@ -104,7 +110,7 @@ The VS Code **Live Server** extension also works.
 
 ## Adding a Project
 
-Edit `assets/js/data/projects.js` and add an object to the `projects` array:
+Edit `assets/scripts/data/projects.js` and add an object to the `projects` array:
 
 ```js
 {
@@ -122,7 +128,7 @@ Edit `assets/js/data/projects.js` and add an object to the `projects` array:
 
 ## Adding a Certificate
 
-Edit `assets/js/data/certificates.js` and add an object to the `certificates` array:
+Edit `assets/scripts/data/certificates.js` and add an object to the `certificates` array:
 
 ```js
 {
@@ -145,9 +151,32 @@ The form uses [EmailJS](https://www.emailjs.com/) and needs no backend.
 
 1. Create an EmailJS service and an email template.
 2. In the template, use these variables, which match the form field names: `user_name`, `user_email`, `user_subject`, `user_message`.
-3. Put your service ID, template ID, and public key in the `emailjs.sendForm(...)` call in `assets/js/main/main.js`.
+3. Put your service ID, template ID, and public key in the `emailjs.sendForm(...)` call in `assets/scripts/main/main.js`.
 
 An EmailJS public key is designed to be exposed in client-side code. To limit abuse, restrict the allowed domains and set a rate limit in the EmailJS dashboard.
+
+---
+
+## Rebuilding Swiper
+
+`swiper.min.js` only contains the Swiper features the carousel uses. If you add one (pagination, autoplay, an effect), rebuild it with the extra module. Create `entry.js`:
+
+```js
+import Swiper from 'swiper';
+import { Navigation, Keyboard, A11y } from 'swiper/modules'; // add modules here
+
+Swiper.use([Navigation, Keyboard, A11y]);
+window.Swiper = Swiper;
+```
+
+Then bundle it, and put Swiper's matching module CSS (for example `swiper/modules/pagination.min.css`) in `assets/styles/libs/swiper.min.css`:
+
+```bash
+npm i swiper@11.2.10 esbuild
+npx esbuild entry.js --bundle --minify --format=iife --target=es2018 --legal-comments=none --outfile=assets/scripts/libs/swiper.min.js
+```
+
+Keep Swiper's MIT notice and the "trimmed build" comment at the top of the output file (`--legal-comments=none` strips them, so add them back). `swiper.min.css` carries the same two comments; keep them there too.
 
 ---
 
