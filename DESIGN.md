@@ -51,7 +51,7 @@ Cards use one of three tones, set by a class:
 
 ## Typography
 
-**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), loaded from Google Fonts, with `sans-serif` fallback. There are two exceptions: the hero code window, which uses the system monospace stack, and the form fields (inputs and the textarea), which use **Rubik** (weight 400, also from Google Fonts) so Arabic text renders well. Rubik falls back to Plus Jakarta Sans, then `sans-serif`, so Latin text still looks right.
+**Typeface:** Plus Jakarta Sans (weights 400, 500, 600, 700, 800), self-hosted as WOFF2 in `assets/styles/fonts/plus_jakarta_sans/`, with `sans-serif` fallback. There are two exceptions: the hero code window, which uses the system monospace stack, and the form fields (inputs and the textarea), which use **Rubik** (weight 400, self-hosted in `assets/styles/fonts/rubik/`) so Arabic text renders well. Rubik falls back to Plus Jakarta Sans, then `sans-serif`, so Latin text still looks right.
 
 | Use | Size | Weight | Notes |
 | --- | --- | --- | --- |

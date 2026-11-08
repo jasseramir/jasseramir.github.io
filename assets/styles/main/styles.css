@@ -1,5 +1,4 @@
 /* === TOKENS === */
-
 :root {
   --cobalt: #0A1CF0;
   --lav: #E6C8F5;
@@ -19,7 +18,6 @@
 }
 
 /* === BASE === */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -111,7 +109,6 @@ svg {
 }
 
 /* === LAYOUT === */
-
 .wrap {
   max-width: 80rem;
   margin: 0 auto;
@@ -159,7 +156,6 @@ section {
 }
 
 /* === HEADER === */
-
 .head {
   position: fixed;
   top: 0;
@@ -284,7 +280,6 @@ section {
 }
 
 /* === SHARED COMPONENTS === */
-
 .pill,
 .btn {
   display: inline-flex;
@@ -391,7 +386,6 @@ section {
 }
 
 /* === HERO === */
-
 .hero {
   background: var(--lav);
   border-radius: 24px;
@@ -463,7 +457,6 @@ section {
   align-items: center;
   gap: 6px;
   padding: 14px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
 .code-bar i {
@@ -681,7 +674,6 @@ section {
 }
 
 /* === ABOUT === */
-
 .split {
   display: grid;
   gap: 20px;
@@ -1006,7 +998,6 @@ section {
 }
 
 /* === SERVICES === */
-
 #services {
   min-height: calc(100vh - var(--hh) - 8px - 48px);
   min-height: calc(100svh - var(--hh) - 8px - 48px);
@@ -1096,7 +1087,6 @@ section {
 }
 
 /* === PROJECTS === */
-
 .proj-grid {
   display: grid;
   gap: 24px;
@@ -1112,7 +1102,6 @@ section {
 }
 
 /* === CERTIFICATES === */
-
 .certs {
   background: var(--sky);
   border-radius: 24px;
@@ -1203,7 +1192,6 @@ section {
 }
 
 /* === CONTACT === */
-
 .talk {
   background: var(--navy);
   color: #fff;
@@ -1357,7 +1345,6 @@ textarea {
 }
 
 /* === FOOTER === */
-
 footer {
   max-width: 80rem;
   margin: 32px auto 0;
@@ -1408,7 +1395,6 @@ footer li a {
 }
 
 /* === CUSTOM CURSOR === */
-
 :root.custom-cursor,
 :root.custom-cursor * {
   cursor: none;
@@ -1525,7 +1511,6 @@ footer li a {
 }
 
 /* === RESPONSIVE === */
-
 @media (min-width: 640px) {
   .head .between {
     padding-inline: 48px;
@@ -1821,7 +1806,6 @@ footer li a {
 }
 
 /* === INTERACTION === */
-
 @media (hover: hover) {
   :is(.btn:not(:disabled), .logo, .nav a, .drawer a.l, footer li a, .burger):hover {
     transform: scale(1.05);
@@ -1877,7 +1861,6 @@ footer li a {
 }
 
 /* === REDUCED MOTION === */
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

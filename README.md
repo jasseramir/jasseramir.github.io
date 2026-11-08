@@ -48,7 +48,8 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | [ScrollReveal](https://scrollrevealjs.org/) v4 | Scroll-in animations, bundled locally in `assets/scripts/libs/scrollreveal.min.js` |
 | [Swiper](https://swiperjs.com/) v11 | Services carousel, a trimmed custom build (Core, Navigation, Keyboard, A11y; about 79 KB instead of 151 KB) in `assets/scripts/libs/swiper.min.js`, with its trimmed styles in `assets/styles/libs/swiper.min.css` |
 | [EmailJS](https://www.emailjs.com/) | Client-side email sending, self-hosted as a trimmed build (`sendForm` only) in `assets/scripts/libs/email.min.js` |
-| [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Typeface, loaded from Google Fonts |
+| [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) | Main typeface (weights 400 to 800), self-hosted as WOFF2 in `assets/styles/fonts/plus_jakarta_sans/` |
+| [Rubik](https://fonts.google.com/specimen/Rubik) | Typeface for the form fields (weight 400, covers Arabic), self-hosted as WOFF2 in `assets/styles/fonts/rubik/` |
 
 Icons are inline SVGs styled by a single rule in the stylesheet, so there is no icon library to load.
 
@@ -67,6 +68,9 @@ Icons are inline SVGs styled by a single rule in the stylesheet, so there is no 
     ├── styles/
     │   ├── main/
     │   │   └── styles.css        # Tokens, layout, components, responsive rules
+    │   ├── fonts/
+    │   │   ├── plus_jakarta_sans/  # plus-jakarta-sans.css + fonts/ (WOFF2 400 to 800, OFL license)
+    │   │   └── rubik/              # rubik.css + fonts/ (WOFF2 400, OFL license)
     │   └── libs/
     │       └── swiper.min.css    # Swiper styles, trimmed to the rules the carousel uses
     ├── scripts/
@@ -183,6 +187,8 @@ Keep Swiper's MIT notice and the "trimmed build" comment at the top of the outpu
 ## Code Style
 
 Formatting is handled by Prettier with the settings in `.prettierrc` (semicolons, single quotes, 2-space indent).
+
+In `styles.css`, each main section starts with a `/* === NAME === */` comment placed directly above its first rule, with no blank line between them.
 
 ---
 
