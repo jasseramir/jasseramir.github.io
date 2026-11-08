@@ -1756,8 +1756,15 @@ footer li a {
     grid-column: span 5;
   }
 
+  /* Edge fade: cards fade in and out at the sides while swiping instead of
+     being cut by a hard edge. A fade, not a shadow, so the page stays flat.
+     Kept narrower than the gap beside the side cards, so cards at rest are
+     untouched. */
   .svc-swiper {
     margin-inline: 0;
+    --fade: min(4vw, 56px);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
   }
 
   .proj-grid {

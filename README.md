@@ -31,7 +31,7 @@ A personal portfolio built from scratch with plain HTML, CSS, and JavaScript. No
 | --- | --- |
 | **Home** | Headline, availability, a flat browser-window illustration, live counters (projects, certificates), resume and project shortcuts |
 | **About** | Short bio, approach tags, and the core skills list |
-| **Services** | A swipeable carousel of six services: Web Design, Development, Responsive Design, Performance Optimization, Accessibility & SEO, Maintenance & Fixes |
+| **Services** | A swipeable carousel (cards fade at the edges on desktop) of six services: Web Design, Development, Responsive Design, Performance Optimization, Accessibility & SEO, Maintenance & Fixes |
 | **Projects** | Cards with live demo and repository links |
 | **Certificates** | Verified credentials with issuer, date, and a link to each certificate |
 | **Contact** | EmailJS form, LinkedIn, and GitHub |
