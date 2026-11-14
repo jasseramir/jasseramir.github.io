@@ -93,8 +93,8 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--navy);
-  outline-offset: 2px;
+  outline: 2px solid var(--lav);
+  outline-offset: -1px;
 }
 
 svg {
@@ -1082,7 +1082,7 @@ section {
 }
 
 .svc h3 {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   margin-bottom: 10px;
 }
 
@@ -1271,17 +1271,13 @@ textarea {
   padding: 12px 14px;
   font-size: 14px;
   font-family: 'Rubik', 'Plus Jakarta Sans', sans-serif;
+  outline: 2px solid transparent;
+  transition: outline-color .3s;
 }
 
 input::placeholder,
 textarea::placeholder {
   color: #9CA3AF;
-}
-
-input:focus,
-textarea:focus {
-  outline: 2px solid var(--lav);
-  outline-offset: 1px;
 }
 
 textarea {
@@ -1741,10 +1737,6 @@ footer li a {
     grid-column: span 5;
   }
 
-  /* Edge fade: cards fade in and out at the sides while swiping instead of
-     being cut by a hard edge. A fade, not a shadow, so the page stays flat.
-     Kept narrower than the gap beside the side cards, so cards at rest are
-     untouched. */
   .svc-swiper {
     margin-inline: 0;
     --fade: min(4vw, 56px);
