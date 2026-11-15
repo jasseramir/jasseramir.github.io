@@ -478,9 +478,125 @@ async function sendEmail() {
   }
 }
 
+/*=============== CONTACT VALIDATION ===============*/
+// The form has `novalidate`, so the browser's own popup never shows. Instead
+// the first invalid field gets focus and a small bubble (.tip) under it.
+// The bubble clears when the user types, leaves the field, or presses Esc.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// One short message per case. Only email has a second "not valid" case.
+const RULES = {
+  name: { empty: 'Enter your name' },
+  email: {
+    empty: 'Enter your email',
+    bad: "Invalid email",
+    test: (v) => EMAIL_RE.test(v),
+  },
+  subject: { empty: 'Add a subject' },
+  message: { empty: 'Write a message' },
+};
+
+const TIP_ICON =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v6m0 5h.01"/></svg>';
+const formFields = [...contactForm.querySelectorAll('.field input, .field textarea')];
+let tip = null;
+let tipTimeoutId = null;
+let placeTimerId = null;
+
+function fieldError(input) {
+  const rule = RULES[input.id];
+  const value = input.value.trim();
+  if (!value) return rule.empty;
+  if (rule.test && !rule.test(value)) return rule.bad;
+  return '';
+}
+
+function clearTip() {
+  if (!tip) return;
+  const old = tip;
+  tip = null;
+  clearTimeout(tipTimeoutId);
+  clearTimeout(placeTimerId);
+  old.el.classList.remove('show');
+  setTimeout(() => {
+    old.el.remove();
+    if (!tip || tip.input !== old.input) {
+      old.input.removeAttribute('aria-invalid');
+      old.input.removeAttribute('aria-describedby');
+    }
+  }, 200);
+}
+
+function placeTip() {
+  if (!tip) return;
+  const vv = window.visualViewport;
+  const header = document.querySelector('header');
+  const headerBottom = header
+    ? Math.max(0, header.getBoundingClientRect().bottom)
+    : 0;
+  const viewTop = Math.max(vv ? vv.offsetTop : 0, headerBottom);
+  const viewBottom = vv ? vv.offsetTop + vv.height : innerHeight;
+  const r = tip.input.getBoundingClientRect();
+  const need = tip.el.offsetHeight + 18;
+  const below = viewBottom - r.bottom;
+  const above = r.top - viewTop;
+  tip.el.classList.toggle('above', below < need && above > below);
+}
+
+function schedulePlaceTip() {
+  clearTimeout(placeTimerId);
+  placeTimerId = setTimeout(placeTip, 80);
+}
+
+function showTip(input, text) {
+  clearTip();
+  const field = input.closest('.field');
+  const el = document.createElement('div');
+  el.className = 'tip';
+  el.id = `tip-${input.id}`;
+  el.setAttribute('role', 'alert');
+  el.innerHTML = `${TIP_ICON}<span>${esc(text)}</span>`;
+  field.append(el);
+  input.setAttribute('aria-invalid', 'true');
+  input.setAttribute('aria-describedby', el.id);
+  tip = { el, field, input };
+  placeTip();
+  requestAnimationFrame(() => {
+    el.classList.add('show');
+  });
+  tipTimeoutId = setTimeout(clearTip, 4000);
+}
+
+if (window.visualViewport) {
+  visualViewport.addEventListener('resize', schedulePlaceTip);
+  visualViewport.addEventListener('scroll', schedulePlaceTip);
+}
+
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  for (const input of formFields) {
+    const msg = fieldError(input);
+    if (msg) {
+      showTip(input, msg);
+      input.focus();
+      setTimeout(placeTip, 350);
+      return;
+    }
+  }
+  clearTip();
   sendEmail();
+});
+
+contactForm.addEventListener('input', (e) => {
+  if (tip && e.target === tip.input) clearTip();
+});
+
+contactForm.addEventListener('focusout', (e) => {
+  if (tip && e.target === tip.input) clearTip();
+});
+
+contactForm.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') clearTip();
 });
 
 /*=============== CUSTOM CURSOR ===============*/

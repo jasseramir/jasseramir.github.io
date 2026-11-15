@@ -143,6 +143,8 @@ Services use Swiper (`.svc-swiper`), initialized in the "Services swiper" block 
 
 Inputs and the textarea use the `--soft` fill, 14px radius, no border, and no resize. They are set in Rubik (400) instead of Plus Jakarta Sans, because Rubik covers Arabic as well as Latin; placeholders inherit it. Labels are uppercase 11px. Focus shows a 2px lavender outline. The honeypot field is positioned off-screen (`.hp`) and hidden from assistive tech with `aria-hidden`.
 
+Required fields use a custom validation bubble instead of the browser's native popup (the form has `novalidate`). On submit, the first invalid field gets focus, a `--err` outline and a `.tip` under it: a navy 14px-radius bubble with a small rotated-square tail, white 13px/700 text and a 22px `--err` circle holding a white "!". It is flat like everything else, fades in over .25s (off under `prefers-reduced-motion`), and goes away when the user types, leaves the field or presses Esc. Messages are short and per field: "Enter your name", "Enter your email", "Add a subject", "Write a message", plus "That's not a valid email" when the email is filled in but does not look like one. The rules and copy live in `RULES` in the "Contact validation" block of `main.js`. The bubble has `role="alert"`, and the field gets `aria-invalid` and `aria-describedby` while it shows.
+
 Form status text appears next to the send button and hides itself after 3.5 seconds. It carries a 22px outline icon (set in `main.js`, styled in CSS): a cobalt spinner while sending, a navy check on a lavender circle on success, and a white cross on a navy circle on failure. The spinner stops turning under `prefers-reduced-motion`.
 
 ## Motion
