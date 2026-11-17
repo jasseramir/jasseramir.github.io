@@ -1282,6 +1282,7 @@ textarea::placeholder {
 
 textarea {
   resize: none;
+  display: block;
 }
 
 .send {
