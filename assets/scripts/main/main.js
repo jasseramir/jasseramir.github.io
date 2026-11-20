@@ -418,65 +418,115 @@ $('certificates-container').innerHTML = certificates.map((c) => `
   </div>`).join('');
 
 /*=============== CONTACT (EMAILJS) ===============*/
-// The form sends through EmailJS and shows its status next to the send button.
+// The send button shows every state of the form: ready, sending, sent, failed.
+// All of its text lives in SEND_STATES. The button is enabled only while it is
+// ready, so nothing can be sent twice or while a result is still on screen.
 // A hidden honeypot field catches bots.
 const contactForm = $('contact-form');
-const contactMessage = $('contact-message');
 const contactBtn = $('contact-button');
+const contactStatus = $('contact-message'); // read out by screen readers
 const honeypotInput = $('website');
-let sendTimeId = null;
 
-// Outline icons (24 viewBox, styled in CSS)
-const STATUS_ICONS = {
-  loading:
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" opacity=".25"/><path d="M21 12a9 9 0 00-9-9"/></svg>',
-  ok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>',
-  error:
-    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18L18 6M6 6l12 12"/></svg>',
+const EMAILJS = {
+  service: 'service_3pl6sg8',
+  template: 'template_s26dkmr',
+  key: '8-3MlNU4tu0G6NJrt',
 };
 
-function setStatus(text, state) {
-  contactMessage.dataset.state = state;
-  contactMessage.innerHTML = `${STATUS_ICONS[state]}<span>${esc(text)}</span>`;
-  contactMessage.style.display = 'flex';
+// text: the label. arrow: adds the arrow icon. dots: adds the cycling dots.
+const SEND_STATES = {
+  ready: { text: 'Send Message', arrow: true },
+  sending: { text: 'Sending', dots: true },
+  sent: { text: 'Sent successfully' },
+  failed: { text: 'Failed to send' },
+};
+const RESULT_MS = 3500; // how long Sent / Failed stay before the button is ready
+const DOTS_MS = 300; // time between one dot appearing and the next
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const SEND_ARROW =
+  '<svg viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>';
+const DOTS =
+  '<span class="dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span>';
+
+// One label per state, all stacked in the same cell (see .send in the CSS),
+// so the button keeps the width of its widest label in every state.
+contactBtn.innerHTML = Object.entries(SEND_STATES)
+  .map(
+    ([state, s]) =>
+      `<span class="lb" data-for="${state}"><span>${esc(s.text)}${s.dots ? DOTS : ''}</span>${s.arrow ? SEND_ARROW : ''}</span>`,
+  )
+  .join('');
+const sendLabels = [...contactBtn.children];
+const dotEls = [...contactBtn.querySelectorAll('.dots i')];
+
+let sendState = null;
+let resetTimer = 0;
+let dotsTimer = 0;
+
+// Sending, Sending., Sending.., Sending..., then again from the start.
+// With reduced motion the dots stay put.
+function showDots(count) {
+  dotEls.forEach((dot, i) => dot.classList.toggle('on', i < count));
+}
+
+function startDots() {
+  let count = reducedMotion ? dotEls.length : 0;
+  showDots(count);
+  if (reducedMotion) return;
+  dotsTimer = setInterval(() => {
+    count = (count + 1) % (dotEls.length + 1);
+    showDots(count);
+  }, DOTS_MS);
+}
+
+function setSendState(state) {
+  clearTimeout(resetTimer);
+  clearInterval(dotsTimer);
+  sendState = state;
+
+  contactBtn.dataset.state = state;
+  contactBtn.disabled = state !== 'ready';
+  contactBtn.setAttribute('aria-busy', state === 'sending');
+  sendLabels.forEach((label) =>
+    label.classList.toggle('on', label.dataset.for === state),
+  );
+  contactStatus.textContent = state === 'ready' ? '' : SEND_STATES[state].text;
+
+  if (state === 'sending') startDots();
+  if (state === 'sent' || state === 'failed') {
+    resetTimer = setTimeout(() => setSendState('ready'), RESULT_MS);
+  }
+  // Lets the custom cursor update while the pointer stays still
+  document.dispatchEvent(new Event('sendstate'));
 }
 
 async function sendEmail() {
-  if (sendTimeId) clearTimeout(sendTimeId);
+  if (sendState !== 'ready') return;
+  setSendState('sending');
 
   try {
-    contactBtn.disabled = true;
-    setStatus('Sending...', 'loading');
-
     // Honeypot filled means a bot: fake success and send nothing
-    if (honeypotInput.value !== '') {
-      setStatus('Sent successfully', 'ok');
-      contactForm.reset();
-      return;
+    if (honeypotInput.value === '') {
+      await emailjs.sendForm(
+        EMAILJS.service,
+        EMAILJS.template,
+        contactForm,
+        EMAILJS.key,
+      );
     }
-
-    await emailjs.sendForm(
-      'service_3pl6sg8',
-      'template_s26dkmr',
-      contactForm,
-      '8-3MlNU4tu0G6NJrt',
-    );
-
-    setStatus('Sent successfully', 'ok');
     contactForm.reset();
+    setSendState('sent');
   } catch (err) {
     console.log(
       'Error: ' +
         (err.text || err.message || JSON.stringify(err) || 'Unknown Error'),
     );
-    setStatus('Failed to send. Please try again.', 'error');
-  } finally {
-    contactBtn.disabled = false;
-    sendTimeId = setTimeout(() => {
-      contactMessage.style.display = 'none';
-    }, 3500);
+    setSendState('failed');
   }
 }
+
+setSendState('ready');
 
 /*=============== CONTACT VALIDATION ===============*/
 // The form has `novalidate`, so the browser's own popup never shows. Instead
@@ -601,7 +651,7 @@ contactForm.addEventListener('keydown', (e) => {
 
 /*=============== CUSTOM CURSOR ===============*/
 // Page-wide. Paper-plane cursor (fine pointers only; touch keeps the native one).
-// Lavender over clickable items, spinner badge over disabled buttons,
+// Lavender over clickable items, spinner badge over the send button while it sends,
 // I-beam over text fields.
 if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
   const TILT = 16;
@@ -633,7 +683,7 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     const typing =
       document.documentElement.classList.contains('egg-typing') &&
       !!target?.closest?.('#skills');
-    const wait = typing || !!target?.closest?.('button:disabled');
+    const wait = typing || !!target?.closest?.('button[aria-busy="true"]');
     const txt = !wait && !!target?.closest?.('input, textarea');
     cursor.classList.toggle('wait', wait);
     cursor.classList.toggle('txt', txt);
@@ -656,11 +706,14 @@ if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     },
     { passive: true },
   );
-  // Repaint when the egg starts or stops typing while the mouse is still
-  document.addEventListener('eggtyping', () => {
+  // Repaint when the egg starts or stops typing, or the send button changes
+  // state, while the mouse is still
+  const repaint = () => {
     if (lastTouch || !cursor.classList.contains('on')) return;
     paint(document.elementFromPoint(lastX, lastY));
-  });
+  };
+  document.addEventListener('eggtyping', repaint);
+  document.addEventListener('sendstate', repaint);
   document.documentElement.addEventListener('mouseleave', () =>
     cursor.classList.remove('on'),
   );

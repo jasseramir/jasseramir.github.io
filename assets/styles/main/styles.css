@@ -1289,50 +1289,64 @@ textarea {
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 800;
-  justify-content: center;
   width: 100%;
+  /* Every label sits in this one cell, so the button is as wide as its widest
+     label (Send Message) and never jumps between states. */
+  display: inline-grid;
+  place-items: center;
+  transition: background .2s, color .2s, transform .2s ease;
 }
 
-.send:disabled {
-  background: var(--soft);
-  color: var(--g6);
+.send .lb {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  visibility: hidden;
+}
+
+.send .lb.on {
+  visibility: visible;
+}
+
+/* The three non-ready states (ready keeps the .lav look) */
+.send[data-state="sending"] {
+  background: var(--navy);
+  color: #fff;
+}
+
+.send[data-state="sent"] {
+  background: var(--mint);
+  color: var(--ink);
+}
+
+.send[data-state="failed"] {
+  background: color-mix(in srgb, var(--err) 16%, #fff);
+  color: color-mix(in srgb, var(--err) 70%, var(--ink));
+}
+
+.send[aria-busy="true"] {
   cursor: wait;
 }
 
-#contact-message {
-  font-size: 14px;
-  font-weight: 700;
-  margin-left: 0.5rem;
-  display: none;
-  align-items: center;
-  gap: 8px;
+/* Dots after "Sending": always take room, so the text does not shift */
+.dots i {
+  font-style: normal;
+  opacity: 0;
 }
 
-#contact-message svg {
-  width: 22px;
-  height: 22px;
+.dots i.on {
+  opacity: 1;
 }
 
-#contact-message[data-state="loading"] svg {
-  color: var(--cobalt);
-  animation: spin .8s linear infinite;
-}
-
-#contact-message[data-state="ok"] svg,
-#contact-message[data-state="error"] svg {
-  padding: 4px;
-  border-radius: 50%;
-  stroke-width: 3;
-}
-
-#contact-message[data-state="ok"] svg {
-  background: var(--lav);
-  color: var(--navy);
-}
-
-#contact-message[data-state="error"] svg {
-  background: color-mix(in srgb, var(--err) 15%, transparent);
-  color: var(--err);
+/* Screen-reader-only text (the form status announcement) */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @keyframes spin {
